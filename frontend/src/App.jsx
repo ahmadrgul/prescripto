@@ -8,6 +8,18 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { useEffect } from 'react';
+
+const ScrollToTop = () => {
+
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0,0);
+  }, [pathname]);
+
+  return null;
+}
 
 const App = () => {
   const location = useLocation();
@@ -15,6 +27,7 @@ const App = () => {
 
   return (
     <div className='max-w-fit mx-auto px-4 sm:px-8 md:px-20 lg:px-32 xl:px-60'>
+      <ScrollToTop />
       {!isLoginOrRegister && <Nav />} 
       <Routes>
         <Route path='/' element={<Home />} />

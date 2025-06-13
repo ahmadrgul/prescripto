@@ -1,6 +1,6 @@
 import { doctors } from "../assets/assets_frontend/assets";
 import DoctorCard from "./DoctorCard";
-import Button from "./Button";
+import { Link } from "react-router";
 
 const TopDocs = () => {
   return (
@@ -15,6 +15,8 @@ const TopDocs = () => {
             {
                 doctors.map((doctor, index) => (
                     <DoctorCard 
+                        key={doctor._id}
+                        id={doctor._id}
                         img={doctor.image}
                         name={doctor.name}
                         speciality={doctor.speciality}
@@ -23,9 +25,13 @@ const TopDocs = () => {
             }
         </div>
         <div className="mt-20 flex justify-center">
-            <button
-                className="bg-[#8f929c] text-white px-6 py-3 rounded-full font-medium hover:bg-primary transition duration-300"
-            >View All Doctors</button>
+            <Link to="/doctors">
+                <button
+                    className="bg-[#8f929c] cursor-pointer text-white px-6 py-3 rounded-full font-medium hover:bg-primary transition duration-300"
+                >
+                    View All Doctors
+                </button>
+            </Link>
         </div>
     </div>
   )

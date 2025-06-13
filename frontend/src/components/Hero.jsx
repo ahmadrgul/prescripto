@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import group_profiles from '../assets/assets_frontend/group_profiles.png';
 import header_img from '../assets/assets_frontend/header_img.png';
 import CTAButton from './CTAButton';
@@ -15,7 +16,12 @@ const Hero = () => {
                     />
                     <p className='font-outfit text-lg text-white leading-6'>Simply browse through our extensive list of trusted doctors, schedule your appointment hassle-free.</p>
                 </div>
-                <CTAButton />
+                <Link
+                    to="/doctors"
+                    className='w-fit'
+                >
+                    <CTAButton />
+                </Link>
             </div>
         </div>
         <div className='flex items-end w-full'>

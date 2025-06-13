@@ -1,4 +1,5 @@
 import logo from '../assets/assets_frontend/logo.svg'
+import { Link } from 'react-router';
 
 const Footer = () => {
   return (
@@ -16,10 +17,10 @@ const Footer = () => {
                 <div className=''>
                     <h3 className='text-2xl font-semibold text-[#4B5563] mb-8'>COMPANY</h3>
                     <ul className='flex flex-col gap-4 text-xl text-[#4B5563]'>
-                        <li>Home</li>
-                        <li>About Us</li>
-                        <li>Contact Us</li>
-                        <li>Privacy Policy</li>
+                        <Link to="/"><li>Home</li></Link>
+                        <Link to="/about"><li>About Us</li></Link>
+                        <Link to="/contact"><li>Contact Us</li></Link>
+                        <Link to="/"><li>Privacy Policy</li></Link>
                     </ul>
                 </div>
                 <div>

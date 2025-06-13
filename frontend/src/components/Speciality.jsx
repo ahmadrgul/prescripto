@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import { specialityData } from '../assets/assets_frontend/assets';
 
 const Speciality = () => {
@@ -10,10 +11,12 @@ const Speciality = () => {
       <div className='flex flex-wrap justify-center gap-2'>
         {
           specialityData.map((speciality, index) => (
-            <div key={index} className="flex flex-col items-center justify-center gap-4 p-4">
-              <img src={speciality.image} alt={speciality.name} />
-              <h3 className="text-lg text-[#1F2937]">{speciality.speciality}</h3>
-            </div>
+            <Link to="/doctors" className='cursor-pointer'>
+              <div key={index} className="flex flex-col items-center justify-center gap-4 p-4">
+                <img src={speciality.image} alt={speciality.name} />
+                <h3 className="text-lg text-[#1F2937]">{speciality.speciality}</h3>
+              </div>
+            </Link>
           ))
         }
       </div>
