@@ -11,7 +11,7 @@ const TopDocs = () => {
                 <p className="text-[#4B5563] text-lg">Simply browse through our extensive list of trusted doctors.</p>
             </div>
         </div>
-        <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(18rem,1fr))] gap-10 mt-20">
+        <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
             {
                 doctors.map((doctor, index) => (
                     <DoctorCard 
