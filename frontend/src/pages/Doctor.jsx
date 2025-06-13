@@ -20,7 +20,7 @@ export const Doctor = () => {
   if (isError) return <div>Error: {error.message}</div>
 
   return (
-    <main className="pt-10">
+    <main>
       <div className="flex flex-col md:flex-row gap-10">
         <div>
           <div className="w-full md:w-72 overflow-visible flex items-end bg-primary rounded-lg ">

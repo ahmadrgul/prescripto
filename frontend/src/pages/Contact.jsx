@@ -2,8 +2,8 @@ import { assets } from "../assets/assets_frontend/assets";
 
 const Contact = () => {
   return (
-    <main className="mt-10 mb-96">
-        <h1 className='text-center text-[#4B5563] font-semibold text-3xl my-20'>CONTACT <span className='text-[#1F2937]'>US</span></h1>
+    <main>
+        <h1 className='text-center text-[#4B5563] font-semibold text-3xl mb-20'>CONTACT <span className='text-[#1F2937]'>US</span></h1>
         <div className="flex flex-col items-center md:flex-row md:justify-center gap-20">
             <div>
                 <img

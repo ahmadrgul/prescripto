@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 const Nav = () => {
   return (
-    <nav className='flex justify-between items-center border-b border-[#ADADAD] py-4'>
+    <nav className='flex justify-between items-center border-b border-[#ADADAD] py-4 mb-10'>
         <div>
             <Link
                 to="/"

@@ -2,7 +2,7 @@ import { assets } from '../assets/assets_frontend/assets'
 
 const About = () => {
   return (
-    <main className='mt-10 mb-60'>
+    <main >
         <h1 className='text-center text-[#4B5563] font-semibold text-3xl'>ABOUT <span className='text-[#1F2937]'>US</span></h1>
         <div className='flex gap-10 mt-10 items-center'>
             <div>
