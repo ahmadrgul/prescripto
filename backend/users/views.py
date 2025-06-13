@@ -5,6 +5,7 @@ from .serializers import DoctorProfileSerializer, PatientProfileSerializer
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 class DoctorViewset(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.select_related('user').all()
@@ -44,3 +45,8 @@ class PatientViewset(viewsets.ModelViewSet):
         instance.delete()
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class SpecializationListAPIView(APIView):
+    def get(self, request):
+        specializations = DoctorProfile.objects.values_list('specialization', flat=True).distinct()
+        return Response(specializations)

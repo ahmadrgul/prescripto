@@ -8,4 +8,5 @@ router.register(r'patients', views.PatientViewset, basename='patient')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('specializations', view=views.SpecializationListAPIView.as_view())
 ]
