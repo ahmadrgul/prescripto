@@ -3,10 +3,10 @@ import Button from './Button';
 
 const CTA = () => {
   return (
-    <div className="w-full my-40 flex bg-primary h-[455px] rounded-xl px-24">
-        <div className='h-full'>
+    <div className="flex flex-col md:flex-row w-full my-40 bg-primary h-fit md:h-[455px] rounded-xl md:px-24">
+        <div className='h-full p-4'>
             <div className='h-full flex flex-col justify-center gap-6'>
-                <h1 className="text-6xl font-semibold text-white font-outfit leading-20">Book Appointment With 100+ Trusted Doctors</h1>
+                <h1 className="text-4xl md:text-6xl font-semibold text-white font-outfit leading-10 md:leading-20">Book Appointment With 100+ Trusted Doctors</h1>
                 <Button 
                     text="Create Account"
                     bgColor="white"
@@ -14,10 +14,10 @@ const CTA = () => {
                 />
             </div>
         </div>
-        <div className='flex items-end w-2/3'>
+        <div className='flex items-end w-full md:w-2/3'>
             <img 
                 src={appointment_img}
-                className='h-[529px]'
+                className='md:h-[529px]'
             />
         </div>
     </div>

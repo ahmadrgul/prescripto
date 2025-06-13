@@ -2,8 +2,8 @@ import logo from '../assets/assets_frontend/logo.svg'
 
 const Footer = () => {
   return (
-    <footer className=''>
-        <div className='flex py-10 w-full justify-between gap-20 font-outfit border-b border-[#ADADAD]'>
+    <footer>
+        <div className='flex flex-col md:flex-row py-10 w-full justify-between gap-20 font-outfit border-b border-[#ADADAD]'>
             <div className='w-full'>
                 <img 
                     src={logo}
