@@ -28,7 +28,7 @@ const ScrollToTop = () => {
 const App = () => {
 
   return (
-    <div className='max-w-fit mx-auto px-4 sm:px-8 md:px-20 lg:px-32 xl:px-60'>
+    <>
       <ScrollToTop /> 
       <Routes>
         <Route element={<UserLayout />}>
@@ -49,7 +49,7 @@ const App = () => {
           {/* <Route path='/admin/doctors' element={<DoctorsList />} /> */}
         </Route>
       </Routes>
-    </div>
+    </>
   )
 }
 
