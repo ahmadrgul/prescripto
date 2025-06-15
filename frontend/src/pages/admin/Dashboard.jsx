@@ -28,7 +28,7 @@ const Dashboard = () => {
         {
           stats.map((stat, index) => (
             <div 
-              className="flex w-fit pl-2 pr-12 py-4 gap-4 rounded-lg border-gray-200 border"
+              className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
               key={index}
             >
               <img 
