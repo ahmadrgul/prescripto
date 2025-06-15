@@ -9,7 +9,8 @@ const DoctorList = () => {
         {
             doctors?.length ? doctors.map((doctor, index) => (
                 <AdminDoctorCard 
-                    key={doctor.id || index}
+                    key={doctor._id || index}
+                    id={doctor._id}
                     img={doctor.image}
                     name={doctor.name}
                     speciality={doctor.speciality}
