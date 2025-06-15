@@ -9,10 +9,14 @@ import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { useEffect } from 'react';
-import Dashboard from './pages/admin/Dashboard';
-import AddDoctor from './pages/admin/AddDoctor';
 import UserLayout from './layouts/UserLayout';
 import AdminLayout from './layouts/AdminLayout';
+import Dashboard from './pages/admin/Dashboard';
+import AddDoctor from './pages/admin/AddDoctor';
+import DoctorList from './pages/admin/DoctorList';
+import Appointments from './pages/admin/Appointments';
+import Patients from './pages/admin/Patients';
+
 
 const ScrollToTop = () => {
 
@@ -45,8 +49,9 @@ const App = () => {
           <Route path='/admin' element={<Dashboard />} />
           <Route path='/admin/dashboard' element={<Dashboard />} />
           <Route path='/admin/add_doctor' element={<AddDoctor />} />
-          {/* <Route path='/admin/appointments' element={<Appointments />} /> */}
-          {/* <Route path='/admin/doctors' element={<DoctorsList />} /> */}
+          <Route path='/admin/appointments' element={<Appointments />} />
+          <Route path='/admin/doctors' element={<DoctorList />} />
+          <Route path='/admin/patients' element={<Patients />} />
         </Route>
       </Routes>
     </>
