@@ -9,6 +9,7 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
 
+
 class DoctorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField()
@@ -17,6 +18,8 @@ class DoctorProfile(models.Model):
     experience = models.SmallIntegerField()
     fee = models.DecimalField(max_digits=5, decimal_places=2)
     address = models.TextField()
+    image = models.ImageField(upload_to='doctor_images', null=True)
+
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -29,3 +32,4 @@ class PatientProfile(models.Model):
         ('O', 'other'),
     )
     gender = models.CharField(max_length=5)
+    image = models.ImageField(upload_to='pateint_images', null=True)

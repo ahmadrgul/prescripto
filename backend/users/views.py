@@ -6,11 +6,13 @@ from rest_framework.exceptions import NotAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class DoctorViewset(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.select_related('user').all()
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAdminOrReadOnly]
+    parser_classes = [MultiPartParser, FormParser]
     search_fields = ['user__first_name', 'user__last_name']
     ordering_fields = ['fee', 'experience']
     filterset_fields = ['specialization', 'education']
@@ -26,6 +28,7 @@ class PatientViewset(viewsets.ModelViewSet):
     queryset = PatientProfile.objects.select_related('user').all()
     serializer_class = PatientProfileSerializer
     permission_classes = [IsAdminOrOwner]
+    parser_classes = [MultiPartParser, FormParser]
     search_fields = ['user__first_name', 'user__last_name']
     ordering_fields = ['birthday', 'gender']
 
