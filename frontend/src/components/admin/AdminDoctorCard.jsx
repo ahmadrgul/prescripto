@@ -10,14 +10,14 @@ const AdminDoctorCard = ({ id, img, name, speciality }) => {
               />
               <div className="hidden absolute self-start right-2 top-2 gap-2.5 items-start group-hover:flex">
                 <Link to={`/admin/doctors/${id}`}>
-                  <button className="cursor-pointer">
+                  <button className="cursor-pointer hover:scale-105">
                       <img
                           src={assets.edit_icon}
                           className="size-6.5"
                       />
                   </button>
                 </Link>
-                <button className="cursor-pointer">
+                <button className="cursor-pointer hover:scale-105">
                     <img
                         src={assets.trash_icon}
                         className="size-6"

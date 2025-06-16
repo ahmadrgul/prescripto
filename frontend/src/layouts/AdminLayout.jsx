@@ -6,7 +6,7 @@ const AdminLayout = () => {
   return (
     <>
         <AdminNav />
-        <div className='flex w-full border'>
+        <div className='flex w-full'>
           <AdminSidebar />
           <Outlet />
         </div>
