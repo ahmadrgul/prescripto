@@ -23,7 +23,7 @@ const Dashboard = () => {
   ]
 
   return (
-    <main className="w-fit p-10">
+    <main className="w-full p-10">
       <div className="flex gap-10">
         {
           stats.map((stat, index) => (

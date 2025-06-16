@@ -32,7 +32,7 @@ const AdminSidebar = () => {
 ]
 
   return (
-    <aside className="border-r border-[#BEBEBE] h-screen">
+    <aside className="border-r border-[#BEBEBE] max-h-full min-h-screen">
         <ul className="pt-6 flex flex-col">
             {
                 tabs.map((tab, index) => (
@@ -41,7 +41,7 @@ const AdminSidebar = () => {
                     >
                         <NavLink
                             to={`admin/${tab.path}`}
-                            className={({ isActive }) => `flex cursor-pointer gap-3 items-end ${isActive ? "bg-[#F2F3FF] border-r-6 border-r-primary font-medium" : "border-r-transparent"}  py-5 pl-6 pr-36`}
+                            className={({ isActive }) => `flex cursor-pointer gap-3 items-end ${isActive ? "bg-[#F2F3FF] border-r-primary font-medium" : "border-r-transparent"} border-r-6  py-5 pl-6 pr-36`}
                         >
                             <img
                                 src={tab.icon}

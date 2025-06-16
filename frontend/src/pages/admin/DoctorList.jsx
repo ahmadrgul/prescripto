@@ -3,7 +3,7 @@ import { doctors } from "../../assets/assets_frontend/assets"
 
 const DoctorList = () => {
   return (
-    <main className="p-10">
+    <main className="p-10 w-full">
       <h2 className="font-medium font-outfit text-xl text-[#323232]">All Doctors</h2>
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {

@@ -112,9 +112,9 @@ const Appointments = () => {
   })
 
   return (
-    <main className="w-full p-10">
+    <main className="p-10 w-full">
       <h2 className="font-medium font-outfit text-xl text-[#323232]">All Appointments</h2>
-      <table className="border border-gray-200 w-full table-auto font-outfit text-left mt-6">
+      <table className="border border-gray-200 rounded-lg w-full table-auto font-outfit text-left mt-6">
         <thead>
           {table.getHeaderGroups().map(headerGroup => (
             <tr key={headerGroup.id} className="text-lg">

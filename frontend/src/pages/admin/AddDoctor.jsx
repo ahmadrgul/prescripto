@@ -21,7 +21,7 @@ const AddDoctor = () => {
   
 
   return (
-    <main className="p-10 font-outfit">
+    <main className="p-10 font-outfit w-full">
       <h2 className="font-medium text-xl text-[#323232]">Add Doctor</h2>
       <div className="border border-[#D8D8D8] p-6 rounded-md mt-6 w-5xl">
         <form>
