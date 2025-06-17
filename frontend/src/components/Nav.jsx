@@ -2,8 +2,11 @@ import logo from '../assets/assets_frontend/logo.svg';
 import Button from './Button';
 import { assets } from '../assets/assets_frontend/assets';
 import { Link } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 
 const Nav = () => {
+  const { isAuthenticated, logout } = useAuth();
+
   return (
     <nav className='flex justify-between items-center border-b border-[#ADADAD] py-4 mb-10'>
         <div>
@@ -26,13 +29,20 @@ const Nav = () => {
             </ul>
         </div>
         <div className='hidden md:block'>
-            <Link to="/register">
+            <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
                 <Button 
                     text="Create Account"
                     bgColor="primary"
                     textColor="white"
                 />
             </Link>
+            <Button 
+                text="Logout"
+                bgColor="primary"
+                textColor="white"
+                className={`${!isAuthenticated && "hidden"}`}
+                onClick={logout}
+            />
         </div>
         <div className='md:hidden'>
             <button className='text-2xl text-[#1F2937]'>
