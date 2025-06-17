@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from .models import DoctorProfile, PatientProfile
 from .models import User
+from djoser.serializers import UserSerializer as DjoserUserSerializer
+
+class UserSerializer(DjoserUserSerializer):
+    class Meta(DjoserUserSerializer.Meta):
+        model = User
+        fields = DjoserUserSerializer.Meta.fields + ('role',)
+
 
 class DoctorProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')

@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'users',
+    'djoser',
     'appointments',
     'corsheaders'
 ]
@@ -137,3 +138,12 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+DJOSER = {
+    'LOGIN_FIELD': 'email',
+    'USER_ID_FIELD': 'id',
+    'SERIALIZERS': {
+        'user': 'users.serializers.UserSerializer',
+        'current_user': 'users.serializers.UserSerializer',
+    }
+}

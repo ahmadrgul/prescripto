@@ -8,6 +8,10 @@ class User(AbstractUser):
         ('patient', 'Patient'),
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
 
 class DoctorProfile(models.Model):

@@ -10,8 +10,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
     path('api/', include('appointments.urls')),
-    path('api/token/', TokenObtainPairView.as_view(), name='api_token_auth'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='api_token_refresh'),
+    path('api/auth/', include('djoser.urls')),
+    path('api/auth/', include('djoser.urls.jwt')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
