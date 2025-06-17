@@ -5,7 +5,6 @@ import { fetchSpecializations } from "../api/specializations";
 import { useState } from "react";
 
 const Doctors = () => {
-
     const [ selectedSpec, setSelectedSpec ] = useState();
 
     const {
@@ -19,8 +18,7 @@ const Doctors = () => {
     })
 
     if (loadingSpecs) return <div>Loading...</div>
-    if (isErrorSpecs) return <div>Erro: {errorSpecs}</div>
-    console.log(selectedSpec)
+    if (isErrorSpecs) return <div>Error: {errorSpecs}</div>
 
   return (
     <main>
@@ -28,7 +26,7 @@ const Doctors = () => {
         <div className="flex gap-10 mb-20">
             <aside className="flex flex-col gap-2" >
                 {
-                    specs.data.map((spec, index) => 
+                    specs.map((spec, index) => 
                          <input
                             key={index}
                             type="button" 
@@ -44,6 +42,7 @@ const Doctors = () => {
                 {
                     doctors.map((doctor, index) => (
                         <DoctorCard 
+                            key={index}
                             img={doctor.image}
                             name={doctor.name}
                             speciality={doctor.speciality}
