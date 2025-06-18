@@ -1,8 +1,20 @@
 import { useRef, useState } from 'react';
 import { assets } from '../../assets/assets_admin/assets'
+import { useMutation } from '@tanstack/react-query';
+import { addDoctor } from '../../api/doctor';
 
 const AddDoctor = () => {
   const fileInputRef = useRef(null);
+
+  const mutation = useMutation({
+    mutationFn: addDoctor,
+    onSuccess: (data) => {
+      console.log('Doctor added successfully:', data);
+    },
+    onError: (error) => {
+      console.error('Error adding doctor:', error);
+    }
+  })
 
   const [ image, setImage ] = useState(assets.upload_area);
 
@@ -18,13 +30,18 @@ const AddDoctor = () => {
     }
   };
 
-  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    formData.append('image', fileInputRef.current.files[0]);
+    mutation.mutate(formData);
+  }
 
   return (
     <main className="p-10 font-outfit w-full">
       <h2 className="font-medium text-xl text-[#323232]">Add Doctor</h2>
       <div className="border border-[#D8D8D8] p-6 rounded-md mt-6 w-5xl">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="flex mb-6">
             <div className='flex gap-10 items-center cursor-pointer'>
               <img
@@ -46,11 +63,11 @@ const AddDoctor = () => {
             <div className="flex flex-col gap-4 w-1/2">
               <div className="flex flex-col gap-2">
                 <label htmlFor="firstname" className="text-[#5D607D] text-lg">Doctor Firstname</label>
-                <input type="text" name="firstname" id="firstname" placeholder="John" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
+                <input type="text" name="first_name" id="first_name" placeholder="John" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="lastname" className="text-[#5D607D] text-lg">Doctor Lastname</label>
-                <input type="text" name="lastname" id="lastname" placeholder="Doe" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
+                <label htmlFor="last_name" className="text-[#5D607D] text-lg">Doctor Lastname</label>
+                <input type="text" name="last_name" id="last_name" placeholder="Doe" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="text-[#5D607D] text-lg">Doctor Email</label>
@@ -81,9 +98,9 @@ const AddDoctor = () => {
                 <input type="number" name="fee" id="fee" placeholder="100" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="speciality" className="text-[#5D607D] text-lg">Speciality</label>
+                <label htmlFor="specialization" className="text-[#5D607D] text-lg">Speciality</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">
-                  <select name="speciality" defaultValue="def" id="speciality" className="w-full outline-none " >
+                  <select name="specialization" defaultValue="def" id="specialization" className="w-full outline-none " >
                     <option value="def" disabled >Select Specialty</option>
                     <option value="General Physician">General Physician</option>
                     <option value="Cardiology">Cardiology</option>
@@ -98,8 +115,8 @@ const AddDoctor = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="addressline_1" className="text-[#5D607D] text-lg">Address</label>
-                <input type="text" name="addressline_1" id="addressline_1" placeholder="Dr. Ayesha Siddiqui, MBBS, FCPS" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
+                <label htmlFor="address" className="text-[#5D607D] text-lg">Address</label>
+                <input type="text" name="address" id="address" placeholder="Dr. Ayesha Siddiqui, MBBS, FCPS" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
                 <input type="text" name="addressline_2" id="addressline_2" placeholder="Suite #12, First Floor, Gulberg Plaza, Lahore" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
             </div>

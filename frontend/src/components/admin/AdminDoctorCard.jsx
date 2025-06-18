@@ -1,7 +1,22 @@
 import { Link } from "react-router";
 import { assets } from "../../assets/assets_admin/assets"
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteDoctor } from "../../api/doctor";
 
 const AdminDoctorCard = ({ id, img, name, speciality }) => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: deleteDoctor,
+    onSuccess: () => {
+        queryClient.invalidateQueries(['doctors'])
+    }
+  })
+
+  const handleDelete = () => {
+    mutation.mutate(id)
+  }
+
   return (
     <div className="group h-96 w-72 border-gray-300 border rounded-xl cursor-pointer">
           <div className="flex relative items-end bg-[#EAEFFF] rounded-t-xl group-hover:bg-primary transition-all ease-in-out duration-500">
@@ -17,11 +32,13 @@ const AdminDoctorCard = ({ id, img, name, speciality }) => {
                       />
                   </button>
                 </Link>
-                <button className="cursor-pointer hover:scale-105">
+                <button 
+                    className="cursor-pointer hover:scale-105"
+                    onClick={handleDelete}
+                >
                     <img
                         src={assets.trash_icon}
                         className="size-6"
-                        
                     />
                 </button>
               </div>

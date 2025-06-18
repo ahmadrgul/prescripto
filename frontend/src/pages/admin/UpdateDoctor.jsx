@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { assets } from '../../assets/assets_admin/assets'
 import { useParams } from 'react-router';
-import { doctors } from "../../assets/assets_frontend/assets"
+import { useQuery } from '@tanstack/react-query';
+import { fetchDoctorById } from '../../api/doctor';
 
 const AddDoctor = () => {
+
   const [ formData, setFormData ] = useState({
     image: assets.upload_area,
     firstname: "",
@@ -23,28 +25,38 @@ const AddDoctor = () => {
   const fileInputRef = useRef(null);
   
   const { id } = useParams();
-  const doctor = doctors.find(doc => doc._id == id);
+  const {
+    data: doctor,
+    isLoading,
+    isError,
+    error,
+    isSuccess,
+  } = useQuery({
+    queryKey: ['doctor', id],
+    queryFn: () => fetchDoctorById(id),
+    enabled: !!id,
+  })
 
+  
   useEffect(() => {
-    if (doctor) {
+    if (isSuccess && doctor) {
       setFormData({
           image: doctor.image,
-          firstname: doctor.name,
-          lastname: doctor.name,
-          email: doctor.name,
-          password: doctor.name,
+          firstname: doctor.first_name,
+          lastname: doctor.last_name,
+          email: doctor.email,
           experience: doctor.experience,
-          speciality: doctor.speciality,
-          fee: doctor.fees,
-          education: doctor.degree,
+          speciality: doctor.specialization,
+          fee: doctor.fee,
+          education: doctor.education,
           address1: doctor.address.line1,
           address2: doctor.address.line2,
-          description: doctor.about,
+          description: doctor.description,
       }) 
       setImage(doctor.image || assets.upload_area);
     }
 
-  }, [id, doctor])
+  }, [isSuccess])
   
   const handleImageClick = () => {
     fileInputRef.current.click();
@@ -63,8 +75,9 @@ const AddDoctor = () => {
     setFormData(prev => ({...prev, [name]: value }));
   }
 
-
-  if (!doctor) return <div>Loading...</div>
+  
+  if (isLoading) return <div>Loading</div>
+  if (isError) return <div>Error: {error.message}</div>
 
   return (
     <main className="p-10 font-outfit w-full">
@@ -103,10 +116,6 @@ const AddDoctor = () => {
                 <input type="email" name="email" id="email" placeholder="john@prescripto.com" onChange={handleChange} value={formData.email} className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="password" className="text-[#5D607D] text-lg">Doctor Password</label>
-                <input type="password" name="password" id="password" placeholder="********" onChange={handleChange} value={formData.password} className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
-              </div>
-              <div className="flex flex-col gap-2">
                 <label htmlFor="experience" className="text-[#5D607D] text-lg">Experience</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">
                   <select name="experience" id="experience" onChange={handleChange} value={formData.experience} className="w-full outline-none " >
@@ -120,12 +129,12 @@ const AddDoctor = () => {
                   </select>
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-4 w-1/2">
               <div className="flex flex-col gap-2">
                 <label htmlFor="fee" className="text-[#5D607D] text-lg">Fee</label>
                 <input type="number" name="fee" id="fee" placeholder="100" onChange={handleChange} value={formData.fee} className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
+            </div>
+            <div className="flex flex-col gap-4 w-1/2">
               <div className="flex flex-col gap-2">
                 <label htmlFor="speciality" className="text-[#5D607D] text-lg">Speciality</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">

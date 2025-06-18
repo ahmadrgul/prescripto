@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { doctors } from "../assets/assets_frontend/assets";
 import DoctorCard from "../components/DoctorCard";
 import { fetchSpecializations } from "../api/specializations";
 import { useState } from "react";
+import { fetchDoctors } from "../api/doctor";
 
 const Doctors = () => {
-    const [ selectedSpec, setSelectedSpec ] = useState();
+    const [ selectedSpec, setSelectedSpec ] = useState('');
 
     const {
         data: specs,
@@ -17,8 +17,18 @@ const Doctors = () => {
         queryFn: () => fetchSpecializations(),
     })
 
-    if (loadingSpecs) return <div>Loading...</div>
-    if (isErrorSpecs) return <div>Error: {errorSpecs}</div>
+    const {
+        data: doctors,
+        isLoading: loadingDoctors,
+        isError: isErrorDoctors,
+        error: errorDoctors,
+    } = useQuery({
+        queryKey: ['doctors'],
+        queryFn: () => fetchDoctors(),
+    })
+
+    if (loadingSpecs || loadingDoctors) return <div>Loading...</div>
+    if (isErrorSpecs || errorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
 
   return (
     <main>
@@ -38,14 +48,15 @@ const Doctors = () => {
                         )
                 }     
             </aside>
-            <div className="grid w-full place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
+            <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
                 {
-                    doctors.map((doctor, index) => (
+                    doctors.results.map(doctor => (
                         <DoctorCard 
-                            key={index}
+                            key={doctor.id}
+                            id={doctor.id}
                             img={doctor.image}
-                            name={doctor.name}
-                            speciality={doctor.speciality}
+                            name={"Dr. " + doctor.first_name + " " + doctor.last_name}
+                            speciality={doctor.specialization}
                         />
                     ))
                 }
