@@ -56,7 +56,7 @@ const Doctors = () => {
                             id={doctor.id}
                             img={doctor.image}
                             name={"Dr. " + doctor.first_name + " " + doctor.last_name}
-                            speciality={doctor.specialization}
+                            speciality={doctor.speciality}
                         />
                     ))
                 }

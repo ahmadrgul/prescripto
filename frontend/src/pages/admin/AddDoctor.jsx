@@ -98,14 +98,25 @@ const AddDoctor = () => {
                 <input type="number" name="fee" id="fee" placeholder="100" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="specialization" className="text-[#5D607D] text-lg">Speciality</label>
+                <label htmlFor="speciality" className="text-[#5D607D] text-lg">Speciality</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">
-                  <select name="specialization" defaultValue="def" id="specialization" className="w-full outline-none " >
-                    <option value="def" disabled >Select Specialty</option>
+                  <select name="speciality" defaultValue="def" id="speciality" className="w-full outline-none " >
+                    <option value="def" disabled selected>Select Specialty</option>
                     <option value="General Physician">General Physician</option>
                     <option value="Cardiology">Cardiology</option>
-                    <option value="Nuerology">Nuerology</option>
+                    <option value="Neurology">Neurology</option>
                     <option value="Pulmonology">Pulmonology</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Oncology">Oncology</option>
+                    <option value="Psychiatry">Psychiatry</option>
+                    <option value="Endocrinology">Endocrinology</option>
+                    <option value="Gastroenterology">Gastroenterology</option>
+                    <option value="Ophthalmology">Ophthalmology</option>
+                    <option value="Urology">Urology</option>
+                    <option value="Nephrology">Nephrology</option>
+                    <option value="Rheumatology">Rheumatology</option>
                   </select>
                 </div>              
               </div>
@@ -115,9 +126,9 @@ const AddDoctor = () => {
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="address" className="text-[#5D607D] text-lg">Address</label>
-                <input type="text" name="address" id="address" placeholder="Dr. Ayesha Siddiqui, MBBS, FCPS" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
-                <input type="text" name="addressline_2" id="addressline_2" placeholder="Suite #12, First Floor, Gulberg Plaza, Lahore" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
+                <label htmlFor="address_line1" className="text-[#5D607D] text-lg">Address</label>
+                <input type="text" name="address_line1" id="address_line1" placeholder="Dr. Ayesha Siddiqui, MBBS, FCPS" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
+                <input type="text" name="address_line2" id="address_line2" placeholder="Suite #12, First Floor, Gulberg Plaza, Lahore" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
               </div>
             </div>
           </div>

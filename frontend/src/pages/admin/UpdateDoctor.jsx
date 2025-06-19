@@ -46,11 +46,11 @@ const AddDoctor = () => {
           lastname: doctor.last_name,
           email: doctor.email,
           experience: doctor.experience,
-          speciality: doctor.specialization,
+          speciality: doctor.speciality,
           fee: doctor.fee,
           education: doctor.education,
-          address1: doctor.address.line1,
-          address2: doctor.address.line2,
+          address1: doctor.address_line1,
+          address2: doctor.address_line2,
           description: doctor.description,
       }) 
       setImage(doctor.image || assets.upload_area);
@@ -138,12 +138,23 @@ const AddDoctor = () => {
               <div className="flex flex-col gap-2">
                 <label htmlFor="speciality" className="text-[#5D607D] text-lg">Speciality</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">
-                  <select name="speciality" id="speciality" onChange={handleChange} value={formData.speciality} className="w-full outline-none " >
-                    <option value="def" disabled >Select Specialty</option>
+                <select name="speciality" id="speciality" onChange={handleChange} value={formData.speciality} className="w-full outline-none " >
+                    <option value="def" disabled>Select Specialty</option>
                     <option value="General Physician">General Physician</option>
                     <option value="Cardiology">Cardiology</option>
-                    <option value="Nuerology">Nuerology</option>
+                    <option value="Neurology">Neurology</option>
                     <option value="Pulmonology">Pulmonology</option>
+                    <option value="Dermatology">Dermatology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Oncology">Oncology</option>
+                    <option value="Psychiatry">Psychiatry</option>
+                    <option value="Endocrinology">Endocrinology</option>
+                    <option value="Gastroenterology">Gastroenterology</option>
+                    <option value="Ophthalmology">Ophthalmology</option>
+                    <option value="Urology">Urology</option>
+                    <option value="Nephrology">Nephrology</option>
+                    <option value="Rheumatology">Rheumatology</option>
                   </select>
                 </div>              
               </div>

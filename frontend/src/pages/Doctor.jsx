@@ -35,7 +35,7 @@ export const Doctor = () => {
           <div className="h-full border border-gray-300 rounded-lg py-8 px-6">
             <h1 className="text-3xl text-[#1F2937] font-outfit font-medium mb-1">{doctor.first_name + ' ' + doctor.last_name}</h1>
             <div>
-              <h2 className="font-outfit text-lg mr-4 text-[#4B5563] inline">{doctor.education} - {doctor.specialization}</h2>
+              <h2 className="font-outfit text-lg mr-4 text-[#4B5563] inline">{doctor.education} - {doctor.speciality}</h2>
               <span className="border border-[#4B5563] p-1.5 text-xs text-[#4B5563] rounded-full">{doctor.experience} Years</span>
             </div>
             <div className="mt-4">
