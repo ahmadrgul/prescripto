@@ -1,7 +1,25 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
+class UserManager(BaseUserManager):
+    def create_user(self, email, password, **extra_fields):
+        if not email:
+            raise ValueError('The Email field must be set')
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('role', 'admin')
+
+        return self.create_user(email, password, **extra_fields)
+
 class User(AbstractUser):
+    username = None
     ROLE_CHOICES = (
         ('admin', 'Admin'),
         ('doctor', 'Doctor'),
@@ -13,15 +31,18 @@ class User(AbstractUser):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    objects = UserManager()
+
 
 class DoctorProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     description = models.TextField()
-    specialization = models.CharField(max_length=255)
+    speciality = models.CharField(max_length=255)
     education = models.CharField(max_length=255)
     experience = models.SmallIntegerField()
     fee = models.DecimalField(max_digits=5, decimal_places=2)
-    address = models.TextField()
+    address_line1 = models.TextField()
+    address_line2 = models.TextField()
     image = models.ImageField(upload_to='doctor_images', null=True)
 
 

@@ -11,11 +11,11 @@ from rest_framework.parsers import MultiPartParser, FormParser
 class DoctorViewset(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.select_related('user').all()
     serializer_class = DoctorProfileSerializer
-    permission_classes = [IsAdminOrReadOnly]
+#    permission_classes = [IsAdminOrReadOnly]
     parser_classes = [MultiPartParser, FormParser]
     search_fields = ['user__first_name', 'user__last_name']
     ordering_fields = ['fee', 'experience']
-    filterset_fields = ['specialization', 'education']
+    filterset_fields = ['speciality', 'education']
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -23,6 +23,7 @@ class DoctorViewset(viewsets.ModelViewSet):
         instance.delete()
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class PatientViewset(viewsets.ModelViewSet):
     queryset = PatientProfile.objects.select_related('user').all()
@@ -51,5 +52,5 @@ class PatientViewset(viewsets.ModelViewSet):
 
 class SpecializationListAPIView(APIView):
     def get(self, request):
-        specializations = DoctorProfile.objects.values_list('specialization', flat=True).distinct()
+        specializations = DoctorProfile.objects.values_list('speciality', flat=True).distinct()
         return Response(specializations)
