@@ -62,34 +62,34 @@ export const assets = {
 
 export const specialityData = [
     {
-        speciality: 'General physician',
+        speciality: 'General Physician',
         image: General_physician
     },
     {
-        speciality: 'Gynecologist',
+        speciality: 'Gynecology',
         image: Gynecologist
     },
     {
-        speciality: 'Dermatologist',
+        speciality: 'Dermatology',
         image: Dermatologist
     },
     {
-        speciality: 'Pediatricians',
+        speciality: 'Pediatrics',
         image: Pediatricians
     },
     {
-        speciality: 'Neurologist',
+        speciality: 'Neurology',
         image: Neurologist
     },
     {
-        speciality: 'Gastroenterologist',
+        speciality: 'Gastroenterology',
         image: Gastroenterologist
     },
 ]
 
 export const doctors = [
     {
-        _id: 'doc1',
+        _id: '1',
         name: 'Dr. Richard James',
         image: doc1,
         speciality: 'General physician',
@@ -103,7 +103,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc2',
+        _id: '2',
         name: 'Dr. Emily Larson',
         image: doc2,
         speciality: 'Gynecologist',
@@ -117,7 +117,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc3',
+        _id: '3',
         name: 'Dr. Sarah Patel',
         image: doc3,
         speciality: 'Dermatologist',
@@ -131,7 +131,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc4',
+        _id: '4',
         name: 'Dr. Christopher Lee',
         image: doc4,
         speciality: 'Pediatricians',
@@ -145,7 +145,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc5',
+        _id: '5',
         name: 'Dr. Jennifer Garcia',
         image: doc5,
         speciality: 'Neurologist',
@@ -159,7 +159,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc6',
+        _id: '6',
         name: 'Dr. Andrew Williams',
         image: doc6,
         speciality: 'Neurologist',
@@ -173,7 +173,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc7',
+        _id: '7',
         name: 'Dr. Christopher Davis',
         image: doc7,
         speciality: 'General physician',
@@ -187,7 +187,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc8',
+        _id: '8',
         name: 'Dr. Timothy White',
         image: doc8,
         speciality: 'Gynecologist',
@@ -201,7 +201,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc9',
+        _id: '9',
         name: 'Dr. Ava Mitchell',
         image: doc9,
         speciality: 'Dermatologist',
@@ -215,7 +215,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc10',
+        _id: '10',
         name: 'Dr. Jeffrey King',
         image: doc10,
         speciality: 'Pediatricians',
@@ -229,7 +229,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc11',
+        _id: '11',
         name: 'Dr. Zoe Kelly',
         image: doc11,
         speciality: 'Neurologist',
@@ -243,7 +243,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc12',
+        _id: '12',
         name: 'Dr. Patrick Harris',
         image: doc12,
         speciality: 'Neurologist',
@@ -257,7 +257,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc13',
+        _id: '13',
         name: 'Dr. Chloe Evans',
         image: doc13,
         speciality: 'General physician',
@@ -271,7 +271,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc14',
+        _id: '14',
         name: 'Dr. Ryan Martinez',
         image: doc14,
         speciality: 'Gynecologist',
@@ -285,7 +285,7 @@ export const doctors = [
         }
     },
     {
-        _id: 'doc15',
+        _id: '15',
         name: 'Dr. Amelia Hill',
         image: doc15,
         speciality: 'Dermatologist',

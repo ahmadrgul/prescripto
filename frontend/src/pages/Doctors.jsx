@@ -1,10 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import DoctorCard from "../components/DoctorCard";
 import { fetchSpecializations } from "../api/specializations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchDoctors } from "../api/doctor";
+import { useSearchParams } from "react-router";
 
 const Doctors = () => {
+    const [ searchParams, setSearchParams ] = useSearchParams();
+    const speciality = searchParams.get('speciality') || '';
     const [ selectedSpec, setSelectedSpec ] = useState('');
 
     const {
@@ -23,9 +26,13 @@ const Doctors = () => {
         isError: isErrorDoctors,
         error: errorDoctors,
     } = useQuery({
-        queryKey: ['doctors', selectedSpec],
-        queryFn: () => fetchDoctors(selectedSpec),
+        queryKey: ['doctors', speciality],
+        queryFn: () => fetchDoctors(speciality),
     })
+
+    useEffect(() => {
+        setSelectedSpec(speciality);
+    }, [speciality]);
 
     if (loadingSpecs || loadingDoctors) return <div>Loading...</div>
     if (isErrorSpecs || isErrorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
@@ -42,11 +49,10 @@ const Doctors = () => {
                             type="button" 
                             value={spec} 
                             className={`h-12 w-60 border border-[#B4B4B4] rounded-lg text-[#4B5563] ${selectedSpec == spec && "border-none bg-[#E2E5FF]"} cursor-pointer font-outfit`}
-                            onClick={(e) => setSelectedSpec(e.target.value)}
+                            onClick={() => setSearchParams(spec ? { speciality: spec } : {})}
                         />
-
-                        )
-                }     
+                    )
+                }
             </aside>
             <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
                 {

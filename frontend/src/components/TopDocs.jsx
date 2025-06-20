@@ -13,7 +13,7 @@ const TopDocs = () => {
         </div>
         <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
             {
-                doctors.map((doctor, index) => (
+                doctors.splice(0, 4).map((doctor, index) => (
                     <DoctorCard 
                         key={doctor._id}
                         id={doctor._id}
