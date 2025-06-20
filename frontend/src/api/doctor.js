@@ -18,9 +18,13 @@ export const addDoctor = async (doctorData) => {
     }
 }
 
-export const fetchDoctors = async () => {
+export const fetchDoctors = async (specialization = '') => {
     try {
-        const { data } = await axios.get(`/doctors/`);
+        const { data } = await axios.get(`/doctors/`, {
+            params: {
+                speciality: specialization ? specialization : {},
+            },
+        });
         return data;
     } catch (error) {
         console.error('Error fetching doctors:', error.response.data);

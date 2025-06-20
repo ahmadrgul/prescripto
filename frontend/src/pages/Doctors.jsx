@@ -23,12 +23,12 @@ const Doctors = () => {
         isError: isErrorDoctors,
         error: errorDoctors,
     } = useQuery({
-        queryKey: ['doctors'],
-        queryFn: () => fetchDoctors(),
+        queryKey: ['doctors', selectedSpec],
+        queryFn: () => fetchDoctors(selectedSpec),
     })
 
     if (loadingSpecs || loadingDoctors) return <div>Loading...</div>
-    if (isErrorSpecs || errorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
+    if (isErrorSpecs || isErrorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
 
   return (
     <main>
