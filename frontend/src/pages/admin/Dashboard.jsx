@@ -1,26 +1,58 @@
-import { Profiler } from "react";
+import { Profiler, useEffect, useState } from "react";
 import { assets } from "../../assets/assets_admin/assets"
 import { assets as fassets } from "../../assets/assets_frontend/assets"
+import { useQuery } from "@tanstack/react-query";
+import { fetchDashboardStats, fetchRecentAppointments } from "../../api/dashboard";
+import RecentAppointment from "../../components/admin/RecentAppointment";
 
 const Dashboard = () => {
+  const [ stats, setStats ] = useState([]);
 
-  const stats = [
-    {
-      number: 14,
-      label: "Doctors",
-      icon: assets.doctor_icon,
-    },
-    {
-      number: 2,
-      label: "Appointments",
-      icon: assets.appointments_icon,
-    },
-    {
-      number: 5,
-      label: "Patients",
-      icon: assets.patients_icon,
-    }
-  ]
+  const {
+    data: fetchedStats,
+    isLoading: loadingStats,
+    isError: isErrorStats,
+    errors: errorsStats,
+    isSuccess: isSuccessStats,
+  } = useQuery({
+    queryKey: ["dashboard", "stats"],
+    queryFn: fetchDashboardStats,
+  })
+
+  const {
+    data: recentApps,
+    isLoading: loadingApps,
+    isError: isErrorApps,
+    errors: errorsApps,
+    isSuccess: isSuccessApps,
+  } = useQuery({
+    queryKey: ["appointments", "recents"],
+    queryFn: fetchRecentAppointments,
+  })
+
+  useEffect(() => {
+    if (isSuccessStats)
+    setStats([
+        {
+          number: fetchedStats.doctors,
+          label: "Doctors",
+          icon: assets.doctor_icon,
+        },
+        {
+          number: fetchedStats.appointments,
+          label: "Appointments",
+          icon: assets.appointments_icon,
+        },
+        {
+          number: fetchedStats.patients,
+          label: "Patients",
+          icon: assets.patients_icon,
+        }
+      ])
+  }, [isSuccessStats])
+  
+  if (loadingStats || loadingApps) return <div>Loading...</div>
+  if (isErrorStats || isErrorApps) return <div>Error: {errorsStats.message || errorsApps}</div>
 
   return (
     <main className="w-full p-10">
@@ -54,57 +86,17 @@ const Dashboard = () => {
           </span>
         </h2>
         <div className="flex py-10 flex-col gap-8">
-          <div className="flex justify-between">
-            <div className="flex gap-4">
-              <img 
-                src={fassets.profile_pic}
-                className="rounded-full size-12"
+          {
+            recentApps.length > 0 ?
+            recentApps.map(app => (
+              <RecentAppointment
+                firstName={app.firstName}
+                lastName={app.lastName}
+                img={app.profile_img}
+                date={app.date}
               />
-              <div>
-                <h2 className="text-[#262626] font-medium font-outfit">Dr. Richard James</h2>
-                <span className="text-[#696B80] font-outfit">Booking on 24th July, 2025</span>
-              </div>
-            </div>
-            <button className="cursor-pointer">
-              <img 
-                src={assets.cancel_icon}
-              />
-            </button>
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-4">
-              <img 
-                src={fassets.profile_pic}
-                className="rounded-full size-12"
-              />
-              <div>
-                <h2 className="text-[#262626] font-medium font-outfit">Dr. Richard James</h2>
-                <span className="text-[#696B80] font-outfit">Booking on 24th July, 2025</span>
-              </div>
-            </div>
-            <button className="cursor-pointer">
-              <img 
-                src={assets.cancel_icon}
-              />
-            </button>
-          </div>
-          <div className="flex justify-between">
-            <div className="flex gap-4">
-              <img 
-                src={fassets.profile_pic}
-                className="rounded-full size-12"
-              />
-              <div>
-                <h2 className="text-[#262626] font-medium font-outfit">Dr. Richard James</h2>
-                <span className="text-[#696B80] font-outfit">Booking on 24th July, 2025</span>
-              </div>
-            </div>
-            <button className="cursor-pointer">
-              <img 
-                src={assets.cancel_icon}
-              />
-            </button>
-          </div>
+            )) : <h1>No Appointments found !</h1>
+          }
         </div>
       </div>
     </main>
