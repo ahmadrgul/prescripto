@@ -4,6 +4,12 @@ import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useQuery } from "@tanstack/react-query";
 import { fetchDashboardStats, fetchRecentAppointments } from "../../api/dashboard";
 import RecentAppointment from "../../components/admin/RecentAppointment";
+import { format, parseISO } from "date-fns"
+
+const formatCustomDate = (isoData) => {
+  const data = parseISO(isoData)
+  return format(data, "do MMMM, yyyy.")
+}
 
 const Dashboard = () => {
   const [ stats, setStats ] = useState([]);
@@ -90,10 +96,11 @@ const Dashboard = () => {
             recentApps.length > 0 ?
             recentApps.map(app => (
               <RecentAppointment
-                firstName={app.firstName}
-                lastName={app.lastName}
-                img={app.profile_img}
-                date={app.date}
+                key={app.id}
+                firstName={app.doctor.first_name}
+                lastName={app.doctor.last_name}
+                img={fassets.profile_pic}
+                date={formatCustomDate(app.appointment_date)}
               />
             )) : <h1>No Appointments found !</h1>
           }
