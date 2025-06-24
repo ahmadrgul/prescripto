@@ -7,7 +7,8 @@ import { useSearchParams } from "react-router";
 
 const Doctors = () => {
     const [ searchParams, setSearchParams ] = useSearchParams();
-    const speciality = searchParams.get('speciality') || '';
+
+    const specialityParam = searchParams.get('speciality') || '';
     const [ selectedSpec, setSelectedSpec ] = useState('');
 
     const {
@@ -26,30 +27,31 @@ const Doctors = () => {
         isError: isErrorDoctors,
         error: errorDoctors,
     } = useQuery({
-        queryKey: ['doctors', speciality],
-        queryFn: () => fetchDoctors(speciality),
+        queryKey: ['doctors', specialityParam],
+        queryFn: () => fetchDoctors(specialityParam),
     })
 
     useEffect(() => {
-        setSelectedSpec(speciality);
-    }, [speciality]);
+        setSelectedSpec(specialityParam);
+    }, [specialityParam]);
 
     if (loadingSpecs || loadingDoctors) return <div>Loading...</div>
     if (isErrorSpecs || isErrorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
 
+    console.log(specs.results)
   return (
     <main>
         <h3 className="mt-10 mb-6 text-xl text-[#4B5563] font-medium">Browse through the doctors specialization</h3>
         <div className="flex gap-10 mb-20">
             <aside className="flex flex-col gap-2" >
                 {
-                    specs.map((spec, index) => 
+                    specs.results.map((spec, index) => 
                          <input
                             key={index}
                             type="button" 
-                            value={spec} 
-                            className={`h-12 w-60 border border-[#B4B4B4] rounded-lg text-[#4B5563] ${selectedSpec == spec && "border-none bg-[#E2E5FF]"} cursor-pointer font-outfit`}
-                            onClick={() => setSearchParams(spec ? { speciality: spec } : {})}
+                            value={spec.speciality} 
+                            className={`h-12 w-60 border border-[#B4B4B4] rounded-lg text-[#4B5563] ${selectedSpec == spec.speciality && "border-none bg-[#E2E5FF]"} cursor-pointer font-outfit`}
+                            onClick={() => setSearchParams(spec.speciality ? { speciality: spec.speciality } : {})}
                         />
                     )
                 }

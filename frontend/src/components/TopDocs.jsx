@@ -17,7 +17,6 @@ const TopDocs = () => {
   if (isLoading) return <div className="text-center text-lg text-gray-500">Loading...</div>;
   if (isError) return <div className="text-center text-lg text-red-500">Error: {error.message}</div>;
 
-  console.log(topDocs);
 
   return (
     <div className="my-40 ">
@@ -29,7 +28,7 @@ const TopDocs = () => {
         </div>
         <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
             {
-                topDocs.map((doctor, index) => (
+                topDocs.results.map((doctor, index) => (
                     <DoctorCard 
                         key={doctor.id}
                         id={doctor.id}
