@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'djoser',
     'users',
     'appointments',
-    'corsheaders'
+    'corsheaders',
+    'drf_standardized_errors',
 ]
 
 MIDDLEWARE = [
@@ -133,6 +134,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
+    "EXCEPTION_HANDLER": "drf_standardized_errors.handler.exception_handler",
 }
 
 

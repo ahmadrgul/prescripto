@@ -27,6 +27,7 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     email = models.EmailField(unique=True)
+    last_name = models.CharField(max_length=150, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -48,13 +49,13 @@ class DoctorProfile(models.Model):
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=20)
-    address = models.TextField()
-    birthday = models.DateField()
+    phone = models.CharField(null=True, max_length=20)
+    address = models.TextField(null=True)
+    birthday = models.DateField(null=True)
     GENDER_CHOICES = (
         ('M', 'male'),
         ('F', 'female'),
         ('O', 'other'),
     )
-    gender = models.CharField(max_length=5)
+    gender = models.CharField(max_length=5, null=True)
     image = models.ImageField(upload_to='pateint_images', null=True)

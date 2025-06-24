@@ -27,10 +27,15 @@ class DoctorViewset(viewsets.ModelViewSet):
 class PatientViewset(viewsets.ModelViewSet):
     queryset = PatientProfile.objects.select_related('user').all()
     serializer_class = PatientProfileSerializer
-    permission_classes = [IsAdminOrOwner]
     parser_classes = [MultiPartParser, FormParser]
     search_fields = ['user__first_name', 'user__last_name']
     ordering_fields = ['birthday', 'gender']
+
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return []
+        else:
+            return [IsAdminOrOwner()]
 
     def get_queryset(self):
         user = self.request.user

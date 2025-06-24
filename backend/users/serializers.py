@@ -76,9 +76,15 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
 
 class PatientProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')    
+    last_name = serializers.CharField(source='user.last_name', required=False)    
     email = serializers.EmailField(source='user.email')
     password = serializers.CharField(source='user.password', write_only=True)
+
+    address = serializers.CharField(required=False, allow_blank=True)
+    phone = serializers.CharField(required=False, allow_blank=True)
+    birthday = serializers.DateField(required=False, allow_null=True)
+    gender = serializers.ChoiceField(choices=[('M', 'Male'), ('F', 'Female'), ('N', 'Non-B')], required=False)
+    image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = PatientProfile
@@ -97,12 +103,10 @@ class PatientProfileSerializer(serializers.ModelSerializer):
         
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        first_name = user_data.pop('first_name')
-        last_name = user_data.pop('last_name')
-        email = user_data.pop('email')
-        password = user_data.pop('password')
-
-        user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, role='patient')
+        user_data['role'] = 'patient'
+        serialized_user = UserSerializer(data=user_data)
+        serialized_user.is_valid(raise_exception=True)
+        user = serialized_user.save()
         
         patient_profile = PatientProfile.objects.create(user=user, **validated_data)
         return patient_profile
