@@ -62,48 +62,50 @@ const Dashboard = () => {
 
   return (
     <main className="w-full p-10">
-      <div className="flex gap-10">
-        {
-          stats.map((stat, index) => (
-            <div 
-              className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
-              key={index}
-            >
-              <img 
-                src={stat.icon}
-                className="rounded-full"
-              />
-              <div className="flex flex-col justify-center">
-                <span className="text-[#515151] font-medium font-outfit text-xl">{stat.number}</span>
-                <span className="font-outfit text-[#8893B0]">{stat.label}</span>
-              </div>
-            </div>
-          ))
-        }
-      </div>
-      <div className="mt-20 border border-gray-200 px-6 rounded-lg">
-        <h2 className="text-[#323232] text-lg font-outfit flex items-center font-medium gap-4 py-4 border-b border-b-gray-200">
-          <img 
-            src={assets.list_icon}
-            className="size-5"
-          />
-          <span>
-            Latest Appointments
-          </span>
-        </h2>
-        <div className="flex py-10 flex-col gap-8">
+      <div className="w-fit">
+        <div className="flex gap-10">
           {
-            recentApps.length > 0 ?
-            recentApps.map(app => (
-              <RecentAppointment
-                key={app.id}
-                firstName={app.doctor.first_name}
-                lastName={app.doctor.last_name}
-                img={fassets.profile_pic}
-                date={formatCustomDate(app.appointment_date)}
-              />
-            )) : <h1>No Appointments found !</h1>
+            stats.map((stat, index) => (
+              <div 
+                className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
+                key={index}
+              >
+                <img 
+                  src={stat.icon}
+                  className="rounded-full"
+                />
+                <div className="flex flex-col justify-center">
+                  <span className="text-[#515151] font-medium font-outfit text-xl">{stat.number}</span>
+                  <span className="font-outfit text-[#8893B0]">{stat.label}</span>
+                </div>
+              </div>
+            ))
           }
+        </div>
+        <div className="mt-20 border border-gray-200 px-6 rounded-lg w-full">
+          <h2 className="text-[#323232] text-lg font-outfit flex items-center font-medium gap-4 py-4 border-b border-b-gray-200">
+            <img 
+              src={assets.list_icon}
+              className="size-5"
+            />
+            <span>
+              Latest Appointments
+            </span>
+          </h2>
+          <div className="flex py-10 flex-col gap-8">
+            {
+              recentApps.count > 0 ?
+              recentApps.map(app => (
+                <RecentAppointment
+                  key={app.id}
+                  firstName={app.doctor.first_name}
+                  lastName={app.doctor.last_name}
+                  img={fassets.profile_pic}
+                  date={formatCustomDate(app.appointment_date)}
+                />
+              )) : <h1 className="text-center font-outfit text-gray-500 text-lg">No Appointments found.</h1>
+            }
+          </div>
         </div>
       </div>
     </main>

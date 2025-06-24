@@ -1,5 +1,4 @@
 import { useQuery } from "@tanstack/react-query"
-// import { assets } from "../../assets/assets_admin/assets"
 import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
 import { getAppointments } from "../../api/appointments"
@@ -17,45 +16,6 @@ const getAge = (isoDB) => {
 
 const Appointments = () => {
 
-  // const data = [
-  //   {
-  //     number: 1,
-  //     patient_avatar: fassets.profile_pic,
-  //     patient_name: 'Richard James',
-  //     department: 'Nuerology',
-  //     age: 32,
-  //     date: 'July 24th, 2025. 10 A.M',
-  //     doctor_name: 'Dr. Richard James',
-  //     doctor_avatar: fassets.profile_pic,
-  //     fee: '$50',
-  //     status: 'Scheduled'
-  //   },
-  //   {
-  //     number: 2,
-  //     patient_avatar: fassets.profile_pic,
-  //     patient_name: 'Richard James',
-  //     department: 'Nuerology',
-  //     age: 32,
-  //     date: 'July 24th, 2025. 10 A.M',
-  //     doctor_name: 'Dr. Richard James',
-  //     doctor_avatar: fassets.profile_pic,
-  //     fee: '$50',
-  //     status: 'Completed'
-  //   },
-  //   {
-  //     number: 3,
-  //     patient_avatar: fassets.profile_pic,
-  //     patient_name: 'Richard James',
-  //     department: 'Nuerology',
-  //     age: 32,
-  //     date: 'July 24th, 2025. 10 A.M',
-  //     doctor_name: 'Dr. Richard James',
-  //     doctor_avatar: fassets.profile_pic,
-  //     fee: '$50',
-  //     status: 'Cancelled'
-  //   }
-  // ]
-
   const {
     data,
     isLoading,
@@ -68,10 +28,10 @@ const Appointments = () => {
 
   
   const columns = [
-    // {
-    //   header: '#',
-    //   accessorKey: 'number',
-    // },
+    {
+      header: '#',
+      cell: ({ row }) => row.index + 1,
+    },
     {
       header: 'Patient',
       accessorKey: 'patient_name',
@@ -136,8 +96,6 @@ const Appointments = () => {
   if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error: {error.message}</div>
   
-  console.log(data)
-
   return (
     <main className="p-10 w-full">
       <h2 className="font-medium font-outfit text-xl text-[#323232]">All Appointments</h2>
@@ -154,7 +112,14 @@ const Appointments = () => {
           ))}
         </thead>
         <tbody>
-          {table.getRowModel().rows.map(row => (
+          { data.count === 0 ? (
+            <tr>
+              <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
+                No appointments found.
+              </td>
+            </tr>
+          ) :
+          table.getRowModel().rows.map(row => (
             <tr key={row.id} className="text-[#696B80] text-lg">
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} className="px-4 py-4">
