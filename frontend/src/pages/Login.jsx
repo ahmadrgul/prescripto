@@ -28,7 +28,7 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: fetchTokens,
-    onSuccess: async (data) => {
+    onSuccess: (data) => {
         login({access: data.access, refresh: data.refresh});
         toast.success("You've been logged in Successfully.");
         navigate("/admin");
@@ -74,7 +74,8 @@ const Login = () => {
                 <button 
                     type="submit"
                     disabled={mutation.isPending || isSubmitting || !isValid} 
-                    className="bg-primary disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer text-gray-100 text-xl font-medium h-14 w-full rounded-lg mt-4">
+                    className="bg-primary disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer text-gray-100 text-xl font-medium h-14 w-full rounded-lg mt-4"
+                >
                     {mutation.isPending || isSubmitting ? (
                       <div className="flex items-center justify-center gap-2">
                         <ClipLoader size={20} color="#fff" />
