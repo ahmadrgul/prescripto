@@ -106,3 +106,7 @@ class PatientProfileSerializer(serializers.ModelSerializer):
         
         patient_profile = PatientProfile.objects.create(user=user, **validated_data)
         return patient_profile
+
+
+class SpecializationSerializer(serializers.Serializer):
+    speciality = serializers.CharField()

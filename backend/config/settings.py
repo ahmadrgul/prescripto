@@ -148,3 +148,9 @@ DJOSER = {
         'user_create': 'users.serializers.UserSerializer',
     }
 }
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=60),
+}

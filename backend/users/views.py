@@ -1,11 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from .models import DoctorProfile, PatientProfile
 from .permissions import IsAdminOrReadOnly, IsAdminOrOwner
-from .serializers import DoctorProfileSerializer, PatientProfileSerializer
+from .serializers import DoctorProfileSerializer, PatientProfileSerializer, SpecializationSerializer
 from rest_framework.exceptions import NotAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser, FormParser
 
 class DoctorViewset(viewsets.ModelViewSet):
@@ -50,13 +49,12 @@ class PatientViewset(viewsets.ModelViewSet):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class SpecializationListAPIView(APIView):
-    def get(self, request):
-        specializations = DoctorProfile.objects.values_list('speciality', flat=True).distinct()
-        return Response(specializations)
 
-class TopDoctorsAPIView(APIView):
-    def get(self, request):
-        top_doctors = DoctorProfile.objects.select_related('user').order_by('?')[:4]
-        serializer = DoctorProfileSerializer(top_doctors, many=True, context={'request': request})
-        return Response(serializer.data, status=status.HTTP_200_OK)
+class SpecializationListAPIView(generics.ListAPIView):
+    queryset = DoctorProfile.objects.values('speciality').distinct()
+    serializer_class = SpecializationSerializer
+
+
+class TopDoctorsAPIView(generics.ListAPIView):
+    queryset = DoctorProfile.objects.select_related('user').order_by('?')[:4]
+    serializer_class = DoctorProfileSerializer
