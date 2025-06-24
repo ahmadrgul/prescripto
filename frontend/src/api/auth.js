@@ -9,9 +9,7 @@ export const fetchTokens = async ({ email, password }) => {
 
         return res.data;
     } catch (error) {
-        console.error(error);
         if (error.response) {
-
             const status = error.response.status;
             const data = error.response.data;
             

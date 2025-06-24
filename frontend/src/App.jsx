@@ -1,6 +1,4 @@
 import { Routes, Route, useLocation, Navigate } from 'react-router';
-import Nav from './components/Nav';
-import Footer from './components/Footer';
 import Home from './pages/Home';
 import Doctors from './pages/Doctors';
 import Doctor from './pages/Doctor';
@@ -20,6 +18,7 @@ import UpdateDoctor from './pages/admin/UpdateDoctor';
 import AdminOnlyRoute from './routes/AdminOnlyRoute';
 import PublicOnlyRoute from './routes/PublicOnlyRoute';
 import PageTransitionWrapper from './components/PageTransitionWrapper';
+import { toast, ToastContainer } from 'react-toastify';
 
 
 const ScrollToTop = () => {
@@ -38,7 +37,7 @@ const App = () => {
 
   return (
     <>
-      <ScrollToTop /> 
+      <ScrollToTop />
       <Routes location={location} key={location.pathname}>
         <Route element={<UserLayout />}>
           <Route path='/' element={<PageTransitionWrapper><Home /></PageTransitionWrapper>} />
@@ -60,6 +59,9 @@ const App = () => {
           <Route path='/admin/patients' element={<PageTransitionWrapper><Patients /></PageTransitionWrapper>} />
         </Route>
       </Routes>
+      <ToastContainer 
+        theme='colored'
+      />
     </>
   )
 }
