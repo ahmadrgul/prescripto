@@ -1,6 +1,10 @@
 import axios from "./axios";
 
 export const fetchSpecializations = async () => {
-    const res =  await axios.get("/specializations");
-    return res.data;
+    try {
+        const { data } =  await axios.get("/specializations");
+        return data;
+    } catch (error) {
+        throw error;
+    }
 }

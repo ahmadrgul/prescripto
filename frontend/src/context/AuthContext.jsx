@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { useState } from "react";
-import { fetchUserData } from "../api/auth";
+import { getUserData } from "../api/auth";
 
 const AuthContext = createContext();
 
@@ -22,19 +22,17 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("refresh", refresh);
         
         try {
-            const userData = await fetchUserData();
+            const userData = await getUserData();
     
             if (userData) {
                 setUser(userData);
                 localStorage.setItem("user", JSON.stringify(userData));
             }
         } catch (error) {
-            console.error("Failed to fetch user data:", error);
             throw error;
         } finally {
             setLoading(false);
         }
-
     }
 
     return (

@@ -1,21 +1,33 @@
 import axios from "./axios";
 
-export const fetchPatients = async () => {
+export const getPatients = async () => {
     try {
-        const res = await axios.get('/patients/');
-        return res.data;
+        const { data } = await axios.get('/patients/');
+        return data;
     } catch (error) {
-        throw new Error('Error fetching patients: ' + error.message);
+        throw error;
     }
 }
 
-export const addPatient = async ({ firstname, email, password }) => {
+
+export const getPatientById = async (id) => {
+    try {
+        const { data } = await axios.get(`/patients/${id}`);
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const createPatient = async ({ firstname, email, password }) => {
     try {
         const formData = new FormData();
         formData.append('first_name', firstname);
         formData.append('email', email);
         formData.append('password', password);
-        const res = await axios.post('/patients/', formData);
+        
+        const { data } = await axios.post('/patients/', formData);
 
         return res.data;
     } catch (error) {

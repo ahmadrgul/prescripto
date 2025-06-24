@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { assets } from "../../assets/assets_admin/assets"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteDoctor } from "../../api/doctor";
+import { handleAPIError } from "../../utils/handleAPIError";
 
 const AdminDoctorCard = ({ id, img, name, speciality }) => {
   const queryClient = useQueryClient();
@@ -10,7 +11,8 @@ const AdminDoctorCard = ({ id, img, name, speciality }) => {
     mutationFn: deleteDoctor,
     onSuccess: () => {
         queryClient.invalidateQueries(['doctors'])
-    }
+    },
+    onError: handleAPIError,
   })
 
   const handleDelete = () => {

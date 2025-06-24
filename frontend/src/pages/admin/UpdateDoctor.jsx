@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { assets } from '../../assets/assets_admin/assets'
 import { useParams } from 'react-router';
 import { useQuery } from '@tanstack/react-query';
-import { fetchDoctorById } from '../../api/doctor';
+import { getDoctorById } from '../../api/doctor';
 
-const AddDoctor = () => {
+const UpdateDoctor = () => {
 
   const [ formData, setFormData ] = useState({
     image: assets.upload_area,
@@ -33,11 +33,11 @@ const AddDoctor = () => {
     isSuccess,
   } = useQuery({
     queryKey: ['doctor', id],
-    queryFn: () => fetchDoctorById(id),
+    queryFn: () => getDoctorById(id),
     enabled: !!id,
   })
 
-  
+
   useEffect(() => {
     if (isSuccess && doctor) {
       setFormData({
@@ -74,7 +74,6 @@ const AddDoctor = () => {
     const { name, value } = e.target;
     setFormData(prev => ({...prev, [name]: value }));
   }
-
   
   if (isLoading) return <div>Loading</div>
   if (isError) return <div>Error: {error.message}</div>
@@ -185,4 +184,4 @@ const AddDoctor = () => {
   )
 }
 
-export default AddDoctor;
+export default UpdateDoctor;

@@ -1,5 +1,5 @@
 import AdminDoctorCard from "../../components/admin/AdminDoctorCard"
-import { fetchDoctors } from "../../api/doctor"
+import { getDoctors } from "../../api/doctor"
 import { useQuery } from "@tanstack/react-query"
 
 const DoctorList = () => {
@@ -10,7 +10,7 @@ const DoctorList = () => {
       errors,
   } = useQuery({
       queryKey: ['doctors'],
-      queryFn: () => fetchDoctors(),
+      queryFn: () => getDoctors(),
   })
 
   if (isLoading) return <div>Loading...</div>

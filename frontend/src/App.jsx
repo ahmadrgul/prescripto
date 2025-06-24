@@ -18,7 +18,7 @@ import UpdateDoctor from './pages/admin/UpdateDoctor';
 import AdminOnlyRoute from './routes/AdminOnlyRoute';
 import PublicOnlyRoute from './routes/PublicOnlyRoute';
 import PageTransitionWrapper from './components/PageTransitionWrapper';
-import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 
 const ScrollToTop = () => {

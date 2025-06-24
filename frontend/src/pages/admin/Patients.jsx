@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query"
 import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
 import { differenceInYears, parseISO } from "date-fns"
-import { fetchPatients } from "../../api/patients"
+import { getPatients } from "../../api/patients"
 
 const getAge = (isoDB) => {
   const dob = parseISO(isoDB)
@@ -18,7 +18,7 @@ const Patients = () => {
     error,
   } = useQuery({
     queryKey: ['patients'],
-    queryFn: fetchPatients,
+    queryFn: getPatients,
   })
 
   

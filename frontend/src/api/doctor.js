@@ -1,24 +1,7 @@
 import axios from "./axios";
 
-export const fetchDoctorById = async (id) => {
-    const { data } = await axios.get(`/doctors/${id}/`)
-    return data;
-}
 
-export const addDoctor = async (doctorData) => {
-    try {
-        const res = await axios.post('/doctors/', doctorData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
-        return res.data;
-    } catch (error) {
-        console.error('Error adding doctor:', error.response.data);
-    }
-}
-
-export const fetchDoctors = async (specialization = '') => {
+export const getDoctors = async (specialization='') => {
     try {
         const { data } = await axios.get(`/doctors/`, {
             params: {
@@ -27,25 +10,50 @@ export const fetchDoctors = async (specialization = '') => {
         });
         return data;
     } catch (error) {
-        console.error('Error fetching doctors:', error.response.data);
         throw error;
     }
 }
 
-export const deleteDoctor = async (id) => {
+
+export const getDoctorById = async (id) => {
     try {
-        const res = await axios.delete(`/doctors/${id}/`);
+        const { data } = await axios.get(`/doctors/${id}/`)
+        return data;
     } catch (error) {
-        console.error("Error Deleting Doctor", error.response.data);
+        throw error;
     }
 }
 
-export const fetchTopDoctors = async () => {
+
+export const createDoctor = async (doctorData) => {
     try {
-        const res = await axios.get('/top-docs');
-        return res.data;
+        const { data } = await axios.post('/doctors/', doctorData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+        return data;
     } catch (error) {
-        console.error('Error fetching top doctors:', error.response.data);
+        throw error;
+    }
+}
+
+
+export const deleteDoctor = async (id) => {
+    try {
+        const { data } = await axios.delete(`/doctors/${id}/`);
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+export const getTopDoctors = async () => {
+    try {
+        const { data } = await axios.get('/top-docs');
+        return data;
+    } catch (error) {
         throw error;
     }
 }

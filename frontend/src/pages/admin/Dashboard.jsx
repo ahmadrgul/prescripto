@@ -2,7 +2,7 @@ import { Profiler, useEffect, useState } from "react";
 import { assets } from "../../assets/assets_admin/assets"
 import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useQuery } from "@tanstack/react-query";
-import { fetchDashboardStats, fetchRecentAppointments } from "../../api/dashboard";
+import { getDashboardStats, getRecentAppointments } from "../../api/dashboard";
 import RecentAppointment from "../../components/admin/RecentAppointment";
 import { format, parseISO } from "date-fns"
 
@@ -22,7 +22,7 @@ const Dashboard = () => {
     isSuccess: isSuccessStats,
   } = useQuery({
     queryKey: ["dashboard", "stats"],
-    queryFn: fetchDashboardStats,
+    queryFn: getDashboardStats,
   })
 
   const {
@@ -30,10 +30,9 @@ const Dashboard = () => {
     isLoading: loadingApps,
     isError: isErrorApps,
     errors: errorsApps,
-    isSuccess: isSuccessApps,
   } = useQuery({
     queryKey: ["appointments", "recents"],
-    queryFn: fetchRecentAppointments,
+    queryFn: getRecentAppointments,
   })
 
   useEffect(() => {

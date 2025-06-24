@@ -1,27 +1,30 @@
 import { useRef, useState } from 'react';
 import { assets } from '../../assets/assets_admin/assets'
 import { useMutation } from '@tanstack/react-query';
-import { addDoctor } from '../../api/doctor';
+import { createDoctor } from '../../api/doctor';
+import { handleAPIError } from '../../utils/handleAPIError'
+import { useNavigate } from 'react-router';
+import { toast } from 'react-toastify';
 
 const AddDoctor = () => {
-  const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   const mutation = useMutation({
-    mutationFn: addDoctor,
+    mutationFn: createDoctor,
     onSuccess: (data) => {
-      console.log('Doctor added successfully:', data);
+      toast.success(`${data.first_name} has been added as doctor.`)
     },
-    onError: (error) => {
-      console.error('Error adding doctor:', error);
-    }
+    onError: handleAPIError,
   })
-
+  
+  const fileInputRef = useRef(null);
+  
   const [ image, setImage ] = useState(assets.upload_area);
-
+  
   const handleImageClick = () => {
     fileInputRef.current.click();
   }
-
+  
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -101,7 +104,7 @@ const AddDoctor = () => {
                 <label htmlFor="speciality" className="text-[#5D607D] text-lg">Speciality</label>
                 <div className="border px-2 py-2 border-[#C1C1C1] rounded-md w-full">
                   <select name="speciality" defaultValue="def" id="speciality" className="w-full outline-none " >
-                    <option value="def" disabled selected>Select Specialty</option>
+                    <option value="def" disabled>Select Specialty</option>
                     <option value="General Physician">General Physician</option>
                     <option value="Cardiology">Cardiology</option>
                     <option value="Neurology">Neurology</option>

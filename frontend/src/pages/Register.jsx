@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router';
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { addPatient } from '../api/patients';
+import { createPatient } from '../api/patients';
 import { toast } from 'react-toastify';
 import { ClipLoader } from 'react-spinners';
+import { handleAPIError } from '../utils/handleAPIError';
 
 const registerSchema = yup.object({
     firstname: yup.string().required("Firstname is required"),
@@ -26,14 +27,12 @@ const Register = () => {
     const navigate = useNavigate();
 
     const mutation = useMutation({
-        mutationFn: addPatient,
+        mutationFn: createPatient,
         onSuccess: (data) => {
             toast.success(`Thanks for registrating, ${data.first_name}. You can login now`)
             navigate("/login");
         },
-        onError: (error) => {
-            toast.error(error.message || "Account creation failed")
-        }
+        onError: handleAPIError,
     })
 
     const onSubmit = (data) => {

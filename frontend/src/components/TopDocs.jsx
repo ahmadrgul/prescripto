@@ -1,6 +1,6 @@
 import DoctorCard from "./DoctorCard";
 import { Link } from "react-router";
-import { fetchTopDoctors } from "../api/doctor";
+import { getTopDoctors } from "../api/doctor";
 import { useQuery } from "@tanstack/react-query";
 
 const TopDocs = () => {
@@ -11,7 +11,7 @@ const TopDocs = () => {
       error,
   } = useQuery({
       queryKey: ['top_doctors'],
-      queryFn: () => fetchTopDoctors(),
+      queryFn: () => getTopDoctors(),
   })
 
   if (isLoading) return <div className="text-center text-lg text-gray-500">Loading...</div>;

@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { fetchTokens } from "../api/auth"
+import { getTokens } from "../api/auth"
 import { Link, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import * as yup from "yup";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ClipLoader } from "react-spinners";
+import { handleAPIError } from "../utils/handleAPIError";
 
 const loginSchema = yup.object({
   email: yup.string().email("Invalid email address").required("Email is required"),
@@ -27,15 +28,13 @@ const Login = () => {
   const { login } = useAuth();
 
   const mutation = useMutation({
-    mutationFn: fetchTokens,
+    mutationFn: getTokens,
     onSuccess: (data) => {
         login({access: data.access, refresh: data.refresh});
         toast.success("You've been logged in Successfully.");
         navigate("/admin");
     },
-    onError: (error) => {
-        toast.error(error?.message || "Login failed. Please try again.");
-    },
+    onError: handleAPIError,
   })
 
   const onSubmit = (data) => {

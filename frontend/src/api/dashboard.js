@@ -1,21 +1,19 @@
 import axios from './axios';
 
-export const fetchDashboardStats = async () => {
+export const getDashboardStats = async () => {
     try {
-        const res = await axios.get('/dashboard/stats/');
-        return res.data;
+        const { data } = await axios.get('/dashboard/stats/');
+        return data;
     } catch (error) {
-        console.error("Error fetching dashboard stats:", error);
         throw error;
     }
 }
 
-export const fetchRecentAppointments = async () => {
+export const getRecentAppointments = async () => {
     try {
-        const res = await axios.get('/dashboard/recent-appointments/');
-        return res.data;
+        const { data } = await axios.get('/dashboard/recent-appointments/');
+        return data;
     } catch (error) {
-        console.error("Error fetching recent appointment:", error);
         throw error;
     }
 }

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import DoctorCard from "../components/DoctorCard";
 import { fetchSpecializations } from "../api/specializations";
 import { useEffect, useState } from "react";
-import { fetchDoctors } from "../api/doctor";
+import { getDoctors } from "../api/doctor";
 import { useSearchParams } from "react-router";
 
 const Doctors = () => {
@@ -28,7 +28,7 @@ const Doctors = () => {
         error: errorDoctors,
     } = useQuery({
         queryKey: ['doctors', specialityParam],
-        queryFn: () => fetchDoctors(specialityParam),
+        queryFn: () => getDoctors(specialityParam),
     })
 
     useEffect(() => {
