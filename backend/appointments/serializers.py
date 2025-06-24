@@ -1,16 +1,25 @@
 from rest_framework import serializers
 from .models import Appointment
 from django.utils import timezone
-from users.models import PatientProfile
+from users.models import PatientProfile, DoctorProfile
+from users.serializers import DoctorProfileSerializer, PatientProfileSerializer
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
+    patient = serializers.PrimaryKeyRelatedField(
+        queryset=PatientProfile.objects.all(),
+        required=False,
+        allow_null=True
+    )
+
+    doctor = serializers.PrimaryKeyRelatedField(
+        queryset=DoctorProfile.objects.all(),
+        required=True
+    )
+
     class Meta:
         model = Appointment
         fields = ['id', 'patient', 'doctor', 'appointment_date', 'state']
-        extra_kwargs = {
-            'patient': {'required': False, 'allow_null': True, 'default': None}
-        }
 
     def validate(self, data):
         user = self.context['request'].user
@@ -34,3 +43,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
             validated_data['patient'] = patient
 
         return Appointment.objects.create(**validated_data)
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['patient'] = PatientProfileSerializer(instance.patient).data if instance.patient else None
+        rep['doctor'] = DoctorProfileSerializer(instance.doctor).data
+        return rep

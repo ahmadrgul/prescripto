@@ -11,7 +11,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 class DoctorViewset(viewsets.ModelViewSet):
     queryset = DoctorProfile.objects.select_related('user').all()
     serializer_class = DoctorProfileSerializer
-#    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
     parser_classes = [MultiPartParser, FormParser]
     search_fields = ['user__first_name', 'user__last_name']
     ordering_fields = ['fee', 'experience']
@@ -54,3 +54,9 @@ class SpecializationListAPIView(APIView):
     def get(self, request):
         specializations = DoctorProfile.objects.values_list('speciality', flat=True).distinct()
         return Response(specializations)
+
+class TopDoctorsAPIView(APIView):
+    def get(self, request):
+        top_doctors = DoctorProfile.objects.select_related('user').order_by('?')[:4]
+        serializer = DoctorProfileSerializer(top_doctors, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
