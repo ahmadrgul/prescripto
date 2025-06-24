@@ -1,8 +1,24 @@
-import { doctors } from "../assets/assets_frontend/assets";
 import DoctorCard from "./DoctorCard";
 import { Link } from "react-router";
+import { fetchTopDoctors } from "../api/doctor";
+import { useQuery } from "@tanstack/react-query";
 
 const TopDocs = () => {
+  const {
+      data: topDocs,
+      isLoading,
+      isError,
+      error,
+  } = useQuery({
+      queryKey: ['top_doctors'],
+      queryFn: () => fetchTopDoctors(),
+  })
+
+  if (isLoading) return <div className="text-center text-lg text-gray-500">Loading...</div>;
+  if (isError) return <div className="text-center text-lg text-red-500">Error: {error.message}</div>;
+
+  console.log(topDocs);
+
   return (
     <div className="my-40 ">
         <div className="flex flex-col items-center gap-20">
@@ -13,12 +29,12 @@ const TopDocs = () => {
         </div>
         <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
             {
-                doctors.splice(0, 4).map((doctor, index) => (
+                topDocs.map((doctor, index) => (
                     <DoctorCard 
-                        key={doctor._id}
-                        id={doctor._id}
+                        key={doctor.id}
+                        id={doctor.id}
                         img={doctor.image}
-                        name={doctor.name}
+                        name={doctor.first_name + ' ' + doctor.last_name}
                         speciality={doctor.speciality}
                     />
                 ))

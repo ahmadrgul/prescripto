@@ -39,3 +39,13 @@ export const deleteDoctor = async (id) => {
         console.error("Error Deleting Doctor", error.response.data);
     }
 }
+
+export const fetchTopDoctors = async () => {
+    try {
+        const res = await axios.get('/top-docs');
+        return res.data;
+    } catch (error) {
+        console.error('Error fetching top doctors:', error.response.data);
+        throw error;
+    }
+}
