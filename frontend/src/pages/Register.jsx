@@ -48,9 +48,10 @@ const Register = () => {
                 <div className="flex flex-col gap-2">
                     <label htmlFor="firstname" className="text-[#4B5563] text-xl">Firstname</label>
                     <input 
+                        autoFocus
                         type="text" 
                         id="firstname"
-                        placeholder="Ahmad"
+                        placeholder="John"
                         {...register("firstname")}
                         className={`border h-14 px-2 w-full text-lg rounded-lg ${errors.firstname ? "border-red-500 outline-red-500" : "border-[#DADADA] outline-primary"}`}
                     />
@@ -61,7 +62,7 @@ const Register = () => {
                     <input 
                         type="email" 
                         id="email"
-                        placeholder="ahmad@prescripto.com"
+                        placeholder="you@example.com"
                         {...register("email")}
                         className={`border h-14 px-2 w-full text-lg rounded-lg ${errors.email ? "border-red-500 outline-red-500" : "border-[#DADADA] outline-primary"}`}
                     />
