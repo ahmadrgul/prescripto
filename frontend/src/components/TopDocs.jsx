@@ -2,6 +2,8 @@ import DoctorCard from "./DoctorCard";
 import { Link } from "react-router";
 import { getTopDoctors } from "../api/doctor";
 import { useQuery } from "@tanstack/react-query";
+import DoctorCardSkeleton from "../skeletons/DoctorCardSkeleton";
+
 
 const TopDocs = () => {
   const {
@@ -14,8 +16,7 @@ const TopDocs = () => {
       queryFn: () => getTopDoctors(),
   })
 
-  if (isLoading) return <div className="text-center text-lg text-gray-500">Loading...</div>;
-  if (isError) return <div className="text-center text-lg text-red-500">Error: {error.message}</div>;
+  if (isError) return <div>Error Occurred</div>
 
 
   return (
@@ -27,13 +28,14 @@ const TopDocs = () => {
             </div>
         </div>
         <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
-            {
+            {   isLoading ?
+                Array(4).fill(0).map((_, i) => <DoctorCardSkeleton key={i} />) :
                 topDocs.results.map((doctor, index) => (
                     <DoctorCard 
                         key={doctor.id}
                         id={doctor.id}
                         img={doctor.image}
-                        name={doctor.first_name + ' ' + doctor.last_name}
+                        name={"Dr. " + doctor.first_name + " " + doctor.last_name}
                         speciality={doctor.speciality}
                     />
                 ))

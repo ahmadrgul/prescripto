@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
-import DoctorCard from "../components/DoctorCard";
 import { fetchSpecializations } from "../api/specializations";
 import { useEffect, useState } from "react";
 import { getDoctors } from "../api/doctor";
 import { useSearchParams } from "react-router";
+import DoctorCard from "../components/DoctorCard";
+import DoctorCardSkeleton from "../skeletons/DoctorCardSkeleton";
+import SpecializationSkeleton from "../skeletons/SpecializationSkeleton";
+
 
 const Doctors = () => {
     const [ searchParams, setSearchParams ] = useSearchParams();
@@ -35,16 +38,16 @@ const Doctors = () => {
         setSelectedSpec(specialityParam);
     }, [specialityParam]);
 
-    if (loadingSpecs || loadingDoctors) return <div>Loading...</div>
-    if (isErrorSpecs || isErrorDoctors) return <div>Error: {errorSpecs || errorDoctors}</div>
+    if (isErrorSpecs || isErrorDoctors) return <div>Error: {errorSpecs.message || errorDoctors.message}</div>
 
-    console.log(specs.results)
   return (
     <main>
         <h3 className="mt-10 mb-6 text-xl text-[#4B5563] font-medium">Browse through the doctors specialization</h3>
         <div className="flex gap-10 mb-20">
             <aside className="flex flex-col gap-2" >
-                {
+                {   
+                    loadingSpecs ?
+                    Array(5).fill(0).map((_, i) => <SpecializationSkeleton key={i} />) :
                     specs.results.map((spec, index) => 
                          <input
                             key={index}
@@ -57,7 +60,9 @@ const Doctors = () => {
                 }
             </aside>
             <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
-                {
+                {   
+                    loadingDoctors ? 
+                    Array(8).fill(0).map((_, i) => <DoctorCardSkeleton key={i} />) :
                     doctors.results.map(doctor => (
                         <DoctorCard 
                             key={doctor.id}

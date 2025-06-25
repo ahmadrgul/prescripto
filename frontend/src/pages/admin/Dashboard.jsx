@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDashboardStats, getRecentAppointments } from "../../api/dashboard";
 import RecentAppointment from "../../components/admin/RecentAppointment";
 import { format, parseISO } from "date-fns"
+import Skeleton from "react-loading-skeleton";
 
 const formatCustomDate = (isoData) => {
   const data = parseISO(isoData)
@@ -56,7 +57,6 @@ const Dashboard = () => {
       ])
   }, [isSuccessStats])
   
-  if (loadingStats || loadingApps) return <div>Loading...</div>
   if (isErrorStats || isErrorApps) return <div>Error: {errorsStats.message || errorsApps}</div>
 
   return (
@@ -64,6 +64,16 @@ const Dashboard = () => {
       <div className="w-fit">
         <div className="flex gap-10">
           {
+            loadingStats ? 
+            Array(3).fill(0).map((_, i) => (
+              <div key={i} className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border">
+                <Skeleton circle width={50} height={50}/>
+                <div className="flex flex-col justify-center">
+                  <Skeleton width={70} height={12} />
+                  <Skeleton width={100} height={12} />
+                </div>
+              </div> 
+            )) :
             stats.map((stat, index) => (
               <div 
                 className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
@@ -93,6 +103,16 @@ const Dashboard = () => {
           </h2>
           <div className="flex py-10 flex-col gap-8">
             {
+              loadingApps ?
+              Array(6).fill(0).map((_, i) => 
+                <div className="flex gap-4">
+                  <Skeleton circle width={50} height={50} />
+                  <div>
+                    <Skeleton height={12} width={150}/>
+                    <Skeleton height={12} width={100} />
+                  </div>
+                </div>
+              ):
               recentApps.count > 0 ?
               recentApps.map(app => (
                 <RecentAppointment

@@ -29,6 +29,7 @@ const PageTransitionWrapper = ({ children }) => {
       exit="out"
       variants={pageVariants}
       transition={pageTransition}
+      className='w-full'
     >
         {children}
     </motion.div>

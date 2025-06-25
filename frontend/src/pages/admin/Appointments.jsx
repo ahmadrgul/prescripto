@@ -3,6 +3,7 @@ import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
 import { getAppointments } from "../../api/appointments"
 import { differenceInYears, format, parseISO } from "date-fns"
+import Skeleton from "react-loading-skeleton"
 
 const formatCustomDate = (isoData) => {
   const data = parseISO(isoData)
@@ -93,7 +94,6 @@ const Appointments = () => {
     getCoreRowModel: getCoreRowModel(),
   })
   
-  if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error: {error.message}</div>
   
   return (
@@ -112,22 +112,35 @@ const Appointments = () => {
           ))}
         </thead>
         <tbody>
-          { data.count === 0 ? (
-            <tr>
-              <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
-                No appointments found.
-              </td>
-            </tr>
-          ) :
-          table.getRowModel().rows.map(row => (
-            <tr key={row.id} className="text-[#696B80] text-lg">
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="px-4 py-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          { 
+            isLoading ? 
+            Array(6).fill(0).map((_, i) => (
+              <tr>
+                {columns.map(
+                  () => 
+                  <td className="px-4 py-4">
+                    <Skeleton height={12} width={80} />
+                  </td>
+                )}
+              </tr>
+            )) :
+            data.count === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
+                  No appointments found.
                 </td>
-              ))}
-            </tr>
-          ))}
+              </tr>
+            ) :
+            table.getRowModel().rows.map(row => (
+              <tr key={row.id} className="text-[#696B80] text-lg">
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id} className="px-4 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
         </tbody>
       </table>
     </main>

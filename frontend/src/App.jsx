@@ -19,6 +19,7 @@ import AdminOnlyRoute from './routes/AdminOnlyRoute';
 import PublicOnlyRoute from './routes/PublicOnlyRoute';
 import PageTransitionWrapper from './components/PageTransitionWrapper';
 import { ToastContainer } from 'react-toastify';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 
 const ScrollToTop = () => {

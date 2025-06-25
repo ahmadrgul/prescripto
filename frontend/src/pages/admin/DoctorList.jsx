@@ -1,6 +1,7 @@
 import AdminDoctorCard from "../../components/admin/AdminDoctorCard"
 import { getDoctors } from "../../api/doctor"
 import { useQuery } from "@tanstack/react-query"
+import DoctorCardSkeleton from "../../skeletons/DoctorCardSkeleton"
 
 const DoctorList = () => {
   const {
@@ -13,7 +14,6 @@ const DoctorList = () => {
       queryFn: () => getDoctors(),
   })
 
-  if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error: {errors}</div>
 
   return (
@@ -21,6 +21,8 @@ const DoctorList = () => {
       <h2 className="font-medium font-outfit text-xl text-[#323232]">All Doctors</h2>
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {
+            isLoading ?
+            Array(8).fill(0).map((_, i) => <DoctorCardSkeleton key={i} />) : 
             doctors.count > 0 ? 
             doctors.results.map((doctor, index) => (
                 <AdminDoctorCard 

@@ -3,6 +3,7 @@ import { assets as fassets } from "../../assets/assets_frontend/assets"
 import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-table"
 import { differenceInYears, parseISO } from "date-fns"
 import { getPatients } from "../../api/patients"
+import Skeleton from "react-loading-skeleton"
 
 const getAge = (isoDB) => {
   const dob = parseISO(isoDB)
@@ -68,7 +69,6 @@ const Patients = () => {
     getCoreRowModel: getCoreRowModel(),
   })
   
-  if (isLoading) return <div>Loading...</div>
   if (isError) return <div>Error: {error.message}</div>
   
   console.log(data)
@@ -89,22 +89,35 @@ const Patients = () => {
           ))}
         </thead>
         <tbody>
-          { data.count === 0 ? (
-            <tr>
-              <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
-                No patients found.
-              </td>
-            </tr>
-          ) :
-          table.getRowModel().rows.map(row => (
-            <tr key={row.id} className="text-[#696B80] text-lg">
-              {row.getVisibleCells().map(cell => (
-                <td key={cell.id} className="px-4 py-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+          {
+            isLoading ? 
+            Array(6).fill(0).map((_, i) => (
+              <tr>
+                {columns.map(
+                  () => 
+                  <td className="px-4 py-4">
+                    <Skeleton height={12} width={80} />
+                  </td>
+                )}
+              </tr>
+            )) :
+            data.count === 0 ? (
+              <tr>
+                <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
+                  No patients found.
                 </td>
-              ))}
-            </tr>
-          ))}
+              </tr>
+            ) :
+            table.getRowModel().rows.map(row => (
+              <tr key={row.id} className="text-[#696B80] text-lg">
+                {row.getVisibleCells().map(cell => (
+                  <td key={cell.id} className="px-4 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))
+          }
         </tbody>
       </table>
     </main>
