@@ -1,11 +1,32 @@
 import logo from '../assets/assets_frontend/logo.svg';
 import Button from './Button';
 import { assets } from '../assets/assets_frontend/assets';
-import { Link } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const Nav = () => {
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const tabs = [
+      {
+          title: 'HOME',
+          path: '/',
+      },
+      {
+          title: 'ALL DOCTORS',
+          path: '/doctors',
+      },
+      {
+          title: 'ABOUT',
+          path: '/about',
+      },
+      {
+          title: 'CONTACT',
+          path: '/contact',
+      },
+  ]
 
   return (
     <nav className='flex justify-between items-center border-b border-[#ADADAD] py-4 mb-10'>
@@ -22,10 +43,16 @@ const Nav = () => {
         </div>
         <div className='hidden md:block'>
             <ul className='flex gap-6 text-[16px] text-[#1F2937] font-medium font-poppins'>
-                <li><Link to="/">HOME</Link></li>
-                <li><Link to="/doctors">ALL DOCTORS</Link></li>
-                <li><Link to="/about">ABOUT</Link></li>
-                <li><Link to="/contact">CONTACT</Link></li>
+                {tabs.map(tab => (
+                    <li>
+                        <NavLink 
+                            to={tab.path}
+                            className={({ isActive }) => `border-b-2 pb-2 ${isActive ? "border-b-primary" : "border-b-transparent"}`}
+                        >
+                            {tab.title}
+                        </NavLink>
+                    </li>
+                ))}
             </ul>
         </div>
         <div className='hidden md:block'>
@@ -41,7 +68,11 @@ const Nav = () => {
                 bgColor="primary"
                 textColor="white"
                 className={`${!isAuthenticated && "hidden"}`}
-                onClick={logout}
+                onClick={() => {
+                    logout();
+                    toast.success("You've been logged out successfully");
+                    navigate("/");
+                }}
             />
         </div>
         <div className='md:hidden'>
