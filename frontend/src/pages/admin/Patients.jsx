@@ -4,6 +4,7 @@ import { useReactTable, getCoreRowModel, flexRender } from "@tanstack/react-tabl
 import { differenceInYears, parseISO } from "date-fns"
 import { getPatients } from "../../api/patients"
 import Skeleton from "react-loading-skeleton"
+import ErrorComponent from "../../components/ErrorComponent"
 
 const getAge = (isoDB) => {
   const dob = parseISO(isoDB)
@@ -17,6 +18,7 @@ const Patients = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ['patients'],
     queryFn: getPatients,
@@ -68,10 +70,6 @@ const Patients = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
-  
-  if (isError) return <div>Error: {error.message}</div>
-  
-  console.log(data)
 
   return (
     <main className="p-10 w-full">
@@ -89,34 +87,43 @@ const Patients = () => {
           ))}
         </thead>
         <tbody>
-          {
+          { 
+            isError ? 
+              <tr >
+                <td colSpan={columns.length} className="text-center">
+                  <ErrorComponent
+                    title={"Unable to load patients data: " + error?.response?.data?.errors[0]?.code || error.message}
+                    retry={refetch}
+                  /> 
+                </td>
+              </tr> :
             isLoading ? 
-            Array(6).fill(0).map((_, i) => (
-              <tr>
-                {columns.map(
-                  () => 
-                  <td className="px-4 py-4">
-                    <Skeleton height={12} width={80} />
-                  </td>
-                )}
-              </tr>
-            )) :
-            data.count === 0 ? (
+              Array(6).fill(0).map((_, i) => (
+                <tr>
+                  {columns.map(
+                    () => 
+                    <td className="px-4 py-4">
+                      <Skeleton height={12} width={80} />
+                    </td>
+                  )}
+                </tr>
+              )) :
+            data.count > 0 ? (
+              table.getRowModel().rows.map(row => (
+                <tr key={row.id} className="text-[#696B80] text-lg">
+                  {row.getVisibleCells().map(cell => (
+                    <td key={cell.id} className="px-4 py-4">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) :
               <tr>
                 <td colSpan={columns.length} className="text-center text-lg py-4 text-gray-500">
                   No patients found.
                 </td>
               </tr>
-            ) :
-            table.getRowModel().rows.map(row => (
-              <tr key={row.id} className="text-[#696B80] text-lg">
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-4 py-4">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))
           }
         </tbody>
       </table>

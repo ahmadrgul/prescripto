@@ -1,6 +1,7 @@
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { getDoctorById } from "../api/doctor";
+import ErrorComponent from "../components/ErrorComponent";
 
 export const Doctor = () => {
   const { id } = useParams();
@@ -9,6 +10,7 @@ export const Doctor = () => {
     isLoading,
     isError,
     error,
+    refetch
   } = useQuery({
     queryKey: ['doctor', id],
     queryFn: () => getDoctorById(id),

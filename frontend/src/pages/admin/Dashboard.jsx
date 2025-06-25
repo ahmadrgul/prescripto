@@ -6,6 +6,7 @@ import { getDashboardStats, getRecentAppointments } from "../../api/dashboard";
 import RecentAppointment from "../../components/admin/RecentAppointment";
 import { format, parseISO } from "date-fns"
 import Skeleton from "react-loading-skeleton";
+import ErrorComponent from "../../components/ErrorComponent"
 
 const formatCustomDate = (isoData) => {
   const data = parseISO(isoData)
@@ -19,8 +20,9 @@ const Dashboard = () => {
     data: fetchedStats,
     isLoading: loadingStats,
     isError: isErrorStats,
-    errors: errorsStats,
+    errors: errorStats,
     isSuccess: isSuccessStats,
+    refetch: refetchStats,
   } = useQuery({
     queryKey: ["dashboard", "stats"],
     queryFn: getDashboardStats,
@@ -30,7 +32,8 @@ const Dashboard = () => {
     data: recentApps,
     isLoading: loadingApps,
     isError: isErrorApps,
-    errors: errorsApps,
+    errors: errorApps,
+    refetch: refetchApps,
   } = useQuery({
     queryKey: ["appointments", "recents"],
     queryFn: getRecentAppointments,
@@ -57,13 +60,16 @@ const Dashboard = () => {
       ])
   }, [isSuccessStats])
   
-  if (isErrorStats || isErrorApps) return <div>Error: {errorsStats.message || errorsApps}</div>
-
   return (
     <main className="w-full p-10">
       <div className="w-fit">
         <div className="flex gap-10">
-          {
+          { 
+            isErrorStats ?
+            <ErrorComponent 
+              title={"Unable to load stats: " + errorStats?.response?.data?.errors[0]?.code || errorStats.message}
+              retry={refetchStats}
+            /> :
             loadingStats ? 
             Array(3).fill(0).map((_, i) => (
               <div key={i} className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border">
@@ -103,6 +109,11 @@ const Dashboard = () => {
           </h2>
           <div className="flex py-10 flex-col gap-8">
             {
+              isErrorStats ?
+                <ErrorComponent 
+                  title={"Unable to load recent appointments: " + errorApps?.response?.data?.errors[0]?.code != undefined || errorApps.message}
+                  retry={refetchApps}
+                /> :
               loadingApps ?
               Array(6).fill(0).map((_, i) => 
                 <div className="flex gap-4">

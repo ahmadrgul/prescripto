@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { getTopDoctors } from "../api/doctor";
 import { useQuery } from "@tanstack/react-query";
 import DoctorCardSkeleton from "../skeletons/DoctorCardSkeleton";
+import ErrorComponent from "../components/ErrorComponent"
 
 
 const TopDocs = () => {
@@ -11,12 +12,11 @@ const TopDocs = () => {
       isLoading,
       isError,
       error,
+      refetch,
   } = useQuery({
       queryKey: ['top_doctors'],
       queryFn: () => getTopDoctors(),
   })
-
-  if (isError) return <div>Error Occurred</div>
 
 
   return (
@@ -28,7 +28,15 @@ const TopDocs = () => {
             </div>
         </div>
         <div className="grid place-items-center grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10 mt-20">
-            {   isLoading ?
+            {   
+                isError ?
+                <div className="flex items-center justify-center">
+                    <ErrorComponent 
+                        title={"Unable to load doctors data: " + error?.response?.data?.errors[0]?.code || error.message}
+                        retry={refetch}
+                    />
+                </div> :
+                isLoading ?
                 Array(4).fill(0).map((_, i) => <DoctorCardSkeleton key={i} />) :
                 topDocs.results.map((doctor, index) => (
                     <DoctorCard 
