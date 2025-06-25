@@ -59,9 +59,7 @@ const App = () => {
           <Route path='/admin/patients' element={<PageTransitionWrapper><Patients /></PageTransitionWrapper>} />
         </Route>
       </Routes>
-      <ToastContainer 
-        theme='colored'
-      />
+      <ToastContainer />
     </>
   )
 }
