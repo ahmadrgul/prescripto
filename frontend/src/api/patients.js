@@ -29,7 +29,7 @@ export const createPatient = async ({ firstname, email, password }) => {
         
         const { data } = await axios.post('/patients/', formData);
 
-        return res.data;
+        return data;
     } catch (error) {
         throw error;
     }
