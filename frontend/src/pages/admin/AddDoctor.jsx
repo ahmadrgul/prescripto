@@ -13,10 +13,23 @@ const AddDoctor = () => {
     mutationFn: createDoctor,
     onSuccess: (data) => {
       toast.success(`${data.first_name} has been added as doctor.`)
+      navigate('/admin/doctors')
     },
     onError: handleAPIError,
   })
-  
+
+  const [ schedule, setSchedule ]= useState([
+    { weekday: 0, availabe: true, startTime: "10:00:00", endTime: "16:00:00", slotDuration: 20 },
+    { weekday: 1, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+    { weekday: 2, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+    { weekday: 3, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+    { weekday: 4, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+    { weekday: 5, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+    { weekday: 6, availabe: false, startTime: "", endTime: "", slotDuration: '' },
+  ])
+
+  const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
   const fileInputRef = useRef(null);
   
   const [ image, setImage ] = useState(assets.upload_area);
@@ -37,8 +50,17 @@ const AddDoctor = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     formData.append('image', fileInputRef.current.files[0]);
+    const clean_schedule = schedule.filter(obj => obj.availabe).map(obj => ({
+      weekday: obj.weekday,
+      start_time: obj.startTime,
+      end_time: obj.endTime,
+      slot_duration: obj.slotDuration,
+    }))
+    formData.append('availability', JSON.stringify(clean_schedule))
     mutation.mutate(formData);
-  }
+    console.log(formData.get('availability'))
+    }
+
 
   return (
     <main className="p-10 font-outfit w-full">
@@ -139,6 +161,83 @@ const AddDoctor = () => {
             <label htmlFor="description" className="text-[#5D607D] text-lg">Description</label>
             <textarea name="description" id="description" rows={6} placeholder="Write about doctor" className="border px-2 py-2 border-[#C1C1C1] outline-primary rounded-md w-full"/>
           </div>
+          <div className="flex flex-col gap-2 mt-6">
+            <label className="text-[#5D607D] text-lg">Availability</label>
+            <table className='border border-gray-200 w-full table-auto font-outfit text-center rounded-md'>
+              <thead className='text-md text-[#5D607D] border-b border-b-gray-200'>
+                <tr>
+                  <th>Available</th>
+                  <th className="px-4">Day</th>
+                  <th className="px-4">From</th>
+                  <th className="px-4">To</th>
+                  <th className="px-4">Slot Duration</th>
+                </tr>
+              </thead>
+              <tbody>
+              {
+                schedule.map((el, index) => (
+                  <tr>
+                    <td>
+                      <input
+                        type='checkbox'
+                        checked={el.availabe}
+                        onChange={() => {
+                          const updated = [...schedule];
+                          updated[index] = { ...el, availabe: !el.availabe }
+                          setSchedule(updated);
+                        }}
+                        className='cursor-pointer'
+                      />
+                    </td>
+                    <td className={`${!el.availabe && "opacity-50"}`}>
+                      {WEEKDAYS[el.weekday]}
+                    </td>
+                    <td>
+                      <input 
+                        type='time'
+                        value={el.startTime}
+                        disabled={!el.availabe}
+                        onChange={(e) => {
+                          const updated = [...schedule]
+                          updated[index] = { ...el, startTime: e.target.value };
+                          setSchedule(updated);
+                        }}
+                        className='disabled:opacity-50 disabled:cursor-not-allowed cursor-text outline-none'
+                      />
+                    </td>
+                    <td>
+                      <input 
+                        type='time'
+                        value={el.endTime}
+                        disabled={!el.availabe}
+                        onChange={(e) => {
+                          const updated = [...schedule]
+                          updated[index] = { ...el, endTime: e.target.value };
+                          setSchedule(updated);
+                        }}
+                        className='disabled:opacity-50 disabled:cursor-not-allowed cursor-text outline-none'
+                      />
+                    </td>
+                    <td>
+                      <input 
+                        type='number'
+                        value={el.slotDuration}
+                        placeholder='Minutes'
+                        disabled={!el.availabe}
+                        onChange={(e) => {
+                          const updated = [...schedule]
+                          updated[index] = { ...el, slotDuration: e.target.value };
+                          setSchedule(updated);
+                        }}
+                        className='text-center rounded-lg disabled:opacity-50 disabled:cursor-not-allowed outline-none'
+                      />
+                    </td>
+                  </tr>
+                ))
+              }
+              </tbody>
+            </table>
+          </div>
           <input 
             type="submit"
             value="Add Doctor"
@@ -149,5 +248,4 @@ const AddDoctor = () => {
     </main>
   )
 }
-
 export default AddDoctor;
