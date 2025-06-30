@@ -8,3 +8,12 @@ export const getAppointments = async () => {
     throw error;
   }
 }
+
+export const createAppointment = async (body) => {
+  try {
+    const { data } = await axios.post('/appointments/', body);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}

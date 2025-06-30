@@ -57,3 +57,12 @@ export const getTopDoctors = async () => {
         throw error;
     }
 }
+
+export const getScheduleById = async (id) => {
+  try {
+    const { data } = await axios.get(`/doctors/${id}/schedule`)
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
