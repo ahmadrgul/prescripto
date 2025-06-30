@@ -1,5 +1,5 @@
-import { Navigate } from 'react-router';
-import { useAuth } from '../context/AuthContext';
+import { Navigate } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 const AdminOnlyRoute = ({ children }) => {
   const { user, isAuthenticated, loading } = useAuth();
@@ -8,9 +8,11 @@ const AdminOnlyRoute = ({ children }) => {
     return <div>Loading...</div>;
   }
 
-  return (
-    isAuthenticated && user.role === 'admin' ? <>{children}</> : <Navigate to="/" />
-  )
-}
+  return isAuthenticated && user.role === "admin" ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/" />
+  );
+};
 
 export default AdminOnlyRoute;

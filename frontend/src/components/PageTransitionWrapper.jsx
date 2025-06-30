@@ -1,25 +1,25 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const pageVariants = {
-    initial: {
-        opacity: 0,
-        y: -50,
-    },
-    in: {
-        opacity: 1,
-        y: 0,
-    },
-    out: {
-        opacity: 0,
-        y: 50,
-    },
+  initial: {
+    opacity: 0,
+    y: -50,
+  },
+  in: {
+    opacity: 1,
+    y: 0,
+  },
+  out: {
+    opacity: 0,
+    y: 50,
+  },
 };
 
 const pageTransition = {
-    type: "tween",
-    ease: "anticipate",
-    duration: 0.3,
-}
+  type: "tween",
+  ease: "anticipate",
+  duration: 0.3,
+};
 
 const PageTransitionWrapper = ({ children }) => {
   return (
@@ -29,11 +29,11 @@ const PageTransitionWrapper = ({ children }) => {
       exit="out"
       variants={pageVariants}
       transition={pageTransition}
-      className='w-full'
+      className="w-full"
     >
-        {children}
+      {children}
     </motion.div>
-  )
-}
+  );
+};
 
 export default PageTransitionWrapper;
