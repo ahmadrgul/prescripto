@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from .models import DoctorProfile, PatientProfile
-from .models import User
+from .models import DoctorProfile, PatientProfile, User
 from djoser.serializers import UserSerializer as DjoserUserSerializer
+from appointments.models import DoctorSchedule
+import json
+
 
 class UserSerializer(DjoserUserSerializer):
     class Meta():
@@ -37,11 +39,21 @@ class UserSerializer(DjoserUserSerializer):
         return instance
 
 
+class AvailabilityField(serializers.ListField):
+    def to_internal_value(self, data):
+        data = data.copy()
+        data = json.loads(data[0])
+
+        return super().to_internal_value(data)
+
+
 class DoctorProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')    
     email = serializers.EmailField(source='user.email')
     password = serializers.CharField(source='user.password', write_only=True)
+
+    availability = AvailabilityField(child=serializers.DictField(),write_only=True)
 
     class Meta:
         model = DoctorProfile
@@ -58,20 +70,28 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
             'fee',
             'address_line1',
             'address_line2',
-            'image'
+            'image',
+            'availability',
         ]
-        
+
     def create(self, validated_data):
         user_data = validated_data.pop('user')
-        first_name = user_data.pop('first_name')
-        last_name = user_data.pop('last_name')
-        email = user_data.pop('email')
-        password = user_data.pop('password')
-
-        user = User.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name, role='doctor')
+        schedule_data = validated_data.pop('availability')
+        
+        user = User.objects.create_user(
+            email=user_data.pop('email'), 
+            password=user_data.pop('password'), 
+            first_name=user_data.pop('first_name'), 
+            last_name=user_data.pop('last_name'), 
+            role='doctor')
 
         doctor_profile = DoctorProfile.objects.create(user=user, **validated_data)
+
+        for schedule in schedule_data:
+            DoctorSchedule.objects.create(doctor=doctor_profile, **schedule)
+
         return doctor_profile
+        
 
 
 class PatientProfileSerializer(serializers.ModelSerializer):

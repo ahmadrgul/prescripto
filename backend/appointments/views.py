@@ -1,12 +1,14 @@
 from rest_framework import viewsets
-from .models import Appointment
-from .serializers import AppointmentSerializer
-from rest_framework.permissions import IsAuthenticated
+from .models import Appointment, DoctorSchedule, TimeOff
+from .serializers import AppointmentSerializer, DoctorScheduleSerializer
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from .permissions import IsParticipantOrAdmin, AllowAdminPatientOnPost
 from users.models import PatientProfile, DoctorProfile
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from rest_framework.views import APIView
+from datetime import date, timedelta, datetime
+from collections import defaultdict
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
@@ -27,6 +29,59 @@ class AppointmentViewSet(viewsets.ModelViewSet):
             return super().get_queryset().filter(doctor__user=user)
 
         return Appointment.objects.none()
+    
+
+class DoctorScheduleViewSet(viewsets.ModelViewSet):
+    queryset = DoctorSchedule.objects.all()
+    serializer_class = DoctorScheduleSerializer
+    permission_classes = [IsAdminUser]
+
+
+class DoctorScheduleByDoctorView(APIView):
+    def get(self, request, doctor_id):
+        schedules = DoctorSchedule.objects.filter(doctor_id=doctor_id)
+        schedule_map = {s.weekday: s for s in schedules}
+        days_off = set(TimeOff.objects.filter(doctor_id=doctor_id).values_list("date", flat=True))
+        
+        today = date.today()
+        next_week = today + timedelta(days=7)
+
+        appointments = Appointment.objects.filter(
+            doctor_id=doctor_id,
+            appointment_date__range=[today, next_week]
+        )
+
+        appointments_by_date = defaultdict(set)
+        for app in appointments:
+            app_date = app.appointment_date
+            app_time = app.appointment_time
+            appointments_by_date[app_date].add(app_time)
+
+        refined_schedule = []
+
+        for i in range(0, 7):
+            day = today + timedelta(days=i)
+            weekday = day.weekday()
+
+            if weekday in schedule_map and day not in days_off:
+                schedule = schedule_map[weekday]
+                start_dt = datetime.combine(day, schedule.start_time)
+                end_dt = datetime.combine(day, schedule.end_time)
+                slot_duration = timedelta(minutes=schedule.slot_duration)
+
+                slots = []
+                current = start_dt
+                while current < end_dt:
+                    if current.time() not in appointments_by_date[day]:
+                        slots.append(current.time().isoformat(timespec='minutes'))
+                    current += slot_duration
+
+                serialized = DoctorScheduleSerializer(schedule).data
+                serialized["date"] = day.isoformat()
+                serialized["slots"] = slots
+                refined_schedule.append(serialized)
+
+        return Response(refined_schedule)
 
 
 @api_view(['GET'])
@@ -45,8 +100,6 @@ def dashboard_stats(request):
 
 @api_view(['GET'])
 def recent_appointments(request):
-    
     appointments = Appointment.objects.order_by('-appointment_date')[:10]
     serializer = AppointmentSerializer(appointments, many=True)
-    
     return Response(serializer.data)

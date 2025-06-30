@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Appointment
+from .models import Appointment, DoctorSchedule
 from django.utils import timezone
 from users.models import PatientProfile, DoctorProfile
 from users.serializers import DoctorProfileSerializer, PatientProfileSerializer
@@ -9,7 +9,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     patient = serializers.PrimaryKeyRelatedField(
         queryset=PatientProfile.objects.all(),
         required=False,
-        allow_null=True
+        allow_null=True,
     )
 
     doctor = serializers.PrimaryKeyRelatedField(
@@ -19,7 +19,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Appointment
-        fields = ['id', 'patient', 'doctor', 'appointment_date', 'state']
+        fields = ['id', 'patient', 'doctor', 'appointment_date', 'appointment_time', 'state']
 
     def validate(self, data):
         user = self.context['request'].user
@@ -29,7 +29,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
 
         date = data.get('appointment_date')
         if date is not None:
-            if date < timezone.now():
+            if date < timezone.now().date():
                 raise serializers.ValidationError("Appointment date cannot be in the past.")
         
         return data
@@ -49,3 +49,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         rep['patient'] = PatientProfileSerializer(instance.patient).data if instance.patient else None
         rep['doctor'] = DoctorProfileSerializer(instance.doctor).data
         return rep
+
+
+class DoctorScheduleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorSchedule
+        fields = ['weekday', 'start_time', 'end_time', 'slot_duration']

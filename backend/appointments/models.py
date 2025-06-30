@@ -4,7 +4,8 @@ from users.models import PatientProfile, DoctorProfile
 class Appointment(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
-    appointment_date = models.DateTimeField()
+    appointment_date = models.DateField()
+    appointment_time = models.TimeField()
     state = models.CharField(max_length=20, choices=[
         ('scheduled', 'Scheduled'),
         ('completed', 'Completed'),
@@ -13,7 +14,19 @@ class Appointment(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['patient', 'appointment_date'], name='unique_patient_appointment'),
-            models.UniqueConstraint(fields=['doctor', 'appointment_date'], name='unique_doctor_appointment'),
+            models.UniqueConstraint(fields=['appointment_date', 'appointment_time'], name='unique_date_time'),
         ]
-    
+
+
+class DoctorSchedule(models.Model):
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+    weekday = models.SmallIntegerField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    slot_duration = models.SmallIntegerField()
+
+
+class TimeOff(models.Model):
+    doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
+    date = models.DateField()
+    reason = models.TextField(blank=True)
