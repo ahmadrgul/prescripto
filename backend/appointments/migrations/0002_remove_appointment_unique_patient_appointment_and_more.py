@@ -6,26 +6,28 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('appointments', '0001_initial'),
-        ('users', '0004_alter_patientprofile_address_and_more'),
+        ("appointments", "0001_initial"),
+        ("users", "0004_alter_patientprofile_address_and_more"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='appointment',
-            name='unique_patient_appointment',
+            model_name="appointment",
+            name="unique_patient_appointment",
         ),
         migrations.RemoveConstraint(
-            model_name='appointment',
-            name='unique_doctor_appointment',
+            model_name="appointment",
+            name="unique_doctor_appointment",
         ),
         migrations.AlterField(
-            model_name='appointment',
-            name='appointment_date',
+            model_name="appointment",
+            name="appointment_date",
             field=models.DateField(),
         ),
         migrations.AddConstraint(
-            model_name='appointment',
-            constraint=models.UniqueConstraint(fields=('appointment_date', 'appointment_time'), name='unique_date_time'),
+            model_name="appointment",
+            constraint=models.UniqueConstraint(
+                fields=("appointment_date", "appointment_time"), name="unique_date_time"
+            ),
         ),
     ]

@@ -6,33 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0003_rename_address_doctorprofile_address_line1_and_more'),
+        ("users", "0003_rename_address_doctorprofile_address_line1_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='patientprofile',
-            name='address',
+            model_name="patientprofile",
+            name="address",
             field=models.TextField(null=True),
         ),
         migrations.AlterField(
-            model_name='patientprofile',
-            name='birthday',
+            model_name="patientprofile",
+            name="birthday",
             field=models.DateField(null=True),
         ),
         migrations.AlterField(
-            model_name='patientprofile',
-            name='gender',
+            model_name="patientprofile",
+            name="gender",
             field=models.CharField(max_length=5, null=True),
         ),
         migrations.AlterField(
-            model_name='patientprofile',
-            name='phone',
+            model_name="patientprofile",
+            name="phone",
             field=models.CharField(max_length=20, null=True),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='last_name',
+            model_name="user",
+            name="last_name",
             field=models.CharField(blank=True, max_length=150),
         ),
     ]

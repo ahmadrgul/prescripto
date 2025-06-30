@@ -1,35 +1,48 @@
+from collections import defaultdict
+from datetime import date, datetime, timedelta
+
 from rest_framework import viewsets
-from .models import Appointment, DoctorSchedule, TimeOff
-from .serializers import AppointmentSerializer, DoctorScheduleSerializer
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from .permissions import IsParticipantOrAdmin, AllowAdminPatientOnPost
-from users.models import PatientProfile, DoctorProfile
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from datetime import date, timedelta, datetime
-from collections import defaultdict
+
+from users.models import DoctorProfile, PatientProfile
+
+from .models import Appointment, DoctorSchedule, TimeOff
+from .permissions import AllowAdminPatientOnPost, IsParticipantOrAdmin
+from .serializers import AppointmentSerializer, DoctorScheduleSerializer
+
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
     serializer_class = AppointmentSerializer
-    permission_classes = [IsAuthenticated, IsParticipantOrAdmin, AllowAdminPatientOnPost]
-    ordering_fields = ['appointment_date']
-    search_fields = ['patient__user__firstname', 'patient__user__lastname' ,'doctor__user__firstname', 'doctor__user__lastname']
-    filterset_fields = ['patient', 'doctor', 'state']
+    permission_classes = [
+        IsAuthenticated,
+        IsParticipantOrAdmin,
+        AllowAdminPatientOnPost,
+    ]
+    ordering_fields = ["appointment_date"]
+    search_fields = [
+        "patient__user__firstname",
+        "patient__user__lastname",
+        "doctor__user__firstname",
+        "doctor__user__lastname",
+    ]
+    filterset_fields = ["patient", "doctor", "state"]
 
     def get_queryset(self):
         user = self.request.user
 
-        if user.role == 'admin':
+        if user.role == "admin":
             return super().get_queryset()
-        elif user.role == 'patient':
+        elif user.role == "patient":
             return super().get_queryset().filter(patient__user=user)
-        elif user.role == 'doctor':
+        elif user.role == "doctor":
             return super().get_queryset().filter(doctor__user=user)
 
         return Appointment.objects.none()
-    
+
 
 class DoctorScheduleViewSet(viewsets.ModelViewSet):
     queryset = DoctorSchedule.objects.all()
@@ -41,14 +54,15 @@ class DoctorScheduleByDoctorView(APIView):
     def get(self, request, doctor_id):
         schedules = DoctorSchedule.objects.filter(doctor_id=doctor_id)
         schedule_map = {s.weekday: s for s in schedules}
-        days_off = set(TimeOff.objects.filter(doctor_id=doctor_id).values_list("date", flat=True))
-        
+        days_off = set(
+            TimeOff.objects.filter(doctor_id=doctor_id).values_list("date", flat=True)
+        )
+
         today = date.today()
         next_week = today + timedelta(days=7)
 
         appointments = Appointment.objects.filter(
-            doctor_id=doctor_id,
-            appointment_date__range=[today, next_week]
+            doctor_id=doctor_id, appointment_date__range=[today, next_week]
         )
 
         appointments_by_date = defaultdict(set)
@@ -73,7 +87,7 @@ class DoctorScheduleByDoctorView(APIView):
                 current = start_dt
                 while current < end_dt:
                     if current.time() not in appointments_by_date[day]:
-                        slots.append(current.time().isoformat(timespec='minutes'))
+                        slots.append(current.time().isoformat(timespec="minutes"))
                     current += slot_duration
 
                 serialized = DoctorScheduleSerializer(schedule).data
@@ -84,22 +98,22 @@ class DoctorScheduleByDoctorView(APIView):
         return Response(refined_schedule)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def dashboard_stats(request):
-    if not request.user.is_authenticated or request.user.role != 'admin':
-        return Response({'detail': 'Not authorized'}, status=403)
-    
+    if not request.user.is_authenticated or request.user.role != "admin":
+        return Response({"detail": "Not authorized"}, status=403)
+
     data = {
-        'appointments': Appointment.objects.count(),
-        'patients': PatientProfile.objects.count(),
-        'doctors': DoctorProfile.objects.count(),
+        "appointments": Appointment.objects.count(),
+        "patients": PatientProfile.objects.count(),
+        "doctors": DoctorProfile.objects.count(),
     }
 
     return Response(data)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def recent_appointments(request):
-    appointments = Appointment.objects.order_by('-appointment_date')[:10]
+    appointments = Appointment.objects.order_by("-appointment_date")[:10]
     serializer = AppointmentSerializer(appointments, many=True)
     return Response(serializer.data)

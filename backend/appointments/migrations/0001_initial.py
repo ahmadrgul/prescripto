@@ -9,42 +9,110 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('users', '0004_alter_patientprofile_address_and_more'),
+        ("users", "0004_alter_patientprofile_address_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DoctorSchedule',
+            name="DoctorSchedule",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('weekday', models.SmallIntegerField()),
-                ('start_time', models.TimeField()),
-                ('end_time', models.TimeField()),
-                ('slot_duration', models.SmallIntegerField()),
-                ('doctor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.doctorprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("weekday", models.SmallIntegerField()),
+                ("start_time", models.TimeField()),
+                ("end_time", models.TimeField()),
+                ("slot_duration", models.SmallIntegerField()),
+                (
+                    "doctor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="users.doctorprofile",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='TimeOff',
+            name="TimeOff",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField()),
-                ('reason', models.TextField(blank=True)),
-                ('doctor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.doctorprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField()),
+                ("reason", models.TextField(blank=True)),
+                (
+                    "doctor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="users.doctorprofile",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Appointment',
+            name="Appointment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('appointment_date', models.DateTimeField()),
-                ('appointment_time', models.TimeField()),
-                ('state', models.CharField(choices=[('scheduled', 'Scheduled'), ('completed', 'Completed'), ('cancelled', 'Cancelled')], default='scheduled', max_length=20)),
-                ('doctor', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.doctorprofile')),
-                ('patient', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.patientprofile')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("appointment_date", models.DateTimeField()),
+                ("appointment_time", models.TimeField()),
+                (
+                    "state",
+                    models.CharField(
+                        choices=[
+                            ("scheduled", "Scheduled"),
+                            ("completed", "Completed"),
+                            ("cancelled", "Cancelled"),
+                        ],
+                        default="scheduled",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "doctor",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="users.doctorprofile",
+                    ),
+                ),
+                (
+                    "patient",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="users.patientprofile",
+                    ),
+                ),
             ],
             options={
-                'constraints': [models.UniqueConstraint(fields=('patient', 'appointment_date'), name='unique_patient_appointment'), models.UniqueConstraint(fields=('doctor', 'appointment_date'), name='unique_doctor_appointment')],
+                "constraints": [
+                    models.UniqueConstraint(
+                        fields=("patient", "appointment_date"),
+                        name="unique_patient_appointment",
+                    ),
+                    models.UniqueConstraint(
+                        fields=("doctor", "appointment_date"),
+                        name="unique_doctor_appointment",
+                    ),
+                ],
             },
         ),
     ]

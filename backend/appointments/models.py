@@ -1,20 +1,28 @@
 from django.db import models
-from users.models import PatientProfile, DoctorProfile
+
+from users.models import DoctorProfile, PatientProfile
+
 
 class Appointment(models.Model):
     patient = models.ForeignKey(PatientProfile, on_delete=models.CASCADE)
     doctor = models.ForeignKey(DoctorProfile, on_delete=models.CASCADE)
     appointment_date = models.DateField()
     appointment_time = models.TimeField()
-    state = models.CharField(max_length=20, choices=[
-        ('scheduled', 'Scheduled'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
-    ], default='scheduled')
+    state = models.CharField(
+        max_length=20,
+        choices=[
+            ("scheduled", "Scheduled"),
+            ("completed", "Completed"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="scheduled",
+    )
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['appointment_date', 'appointment_time'], name='unique_date_time'),
+            models.UniqueConstraint(
+                fields=["appointment_date", "appointment_time"], name="unique_date_time"
+            ),
         ]
 
 
