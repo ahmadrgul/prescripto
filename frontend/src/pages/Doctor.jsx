@@ -192,26 +192,9 @@ export const Doctor = () => {
               </div>
               <div className="flex gap-5 my-5 flex-wrap relative">
                 {isLoadingSchedule ? (
-                  <>
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                    <Skeleton width={70} height={40} circle />
-                  </>
+                  Array(20)
+                  .fill(0)
+                  .map((_, i) => <Skeleton width={70} height={40} circle />)
                 ) : (
                   selectedSchedule.slots.map((time) => (
                     <motion.div
@@ -275,6 +258,7 @@ export const Doctor = () => {
           ) : (
             relatedDocs.results.map((doctor, index) => (
               <DoctorCard
+                id={doctor.id}
                 img={doctor.image}
                 name={doctor.first_name + " " + doctor.last_name}
                 speciality={doctor.speciality}
