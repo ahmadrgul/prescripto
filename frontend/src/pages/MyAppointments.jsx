@@ -6,10 +6,14 @@ import { toast } from "react-toastify";
 import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../components/ErrorComponent";
 import { motion } from "framer-motion";
+import { handleAPIError } from "../utils/handleAPIError";
+import { useAuth } from "../context/AuthContext"
+import { Link } from "react-router";
 
 const MyAppointments = () => {
   const queryClient = useQueryClient();
   const [selectedStatus, setSelectedStatus] = useState("scheduled");
+  const { isAuthenticated } = useAuth();
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["appointments", selectedStatus],
@@ -23,6 +27,7 @@ const MyAppointments = () => {
       toast.success("Success. Appointment has been cancelled");
       queryClient.invalidateQueries({ queryKey: ["appointments"] });
     },
+    onError: handleAPIError,
   });
 
   return (
@@ -44,7 +49,10 @@ const MyAppointments = () => {
       </div>
       <hr className="text-gray-300 mt-6 mb-4" />
       <div>
-        {isError ? (
+        { !isAuthenticated ?
+          <div className="text-center text-xl">Please <Link to="/login" className="text-blue-500">Login</Link> to see your Appointments.</div>
+        :
+        isError ? (
           <ErrorComponent
             title={`Unable to load appointments: ${
               error?.response?.data?.errors[0]?.code || error.message
@@ -86,6 +94,7 @@ const MyAppointments = () => {
               </div>
             ))
         ) : (
+          data.count !== 0 ?
           data.results.map((appt) => (
             <motion.div 
               key={appt.id}
@@ -110,7 +119,8 @@ const MyAppointments = () => {
               />
               <hr className="text-gray-300 mt-6 mb-4" />
             </motion.div>
-          ))
+          )) :
+          <h1>No appointments found</h1>
         )}
       </div>
     </main>
