@@ -11,7 +11,7 @@ const MyAppointments = () => {
   const queryClient = useQueryClient();
   const [selectedStatus, setSelectedStatus] = useState("scheduled");
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["appointments", selectedStatus],
     queryFn: () => getAppointments({ status: selectedStatus }),
   });
@@ -47,13 +47,14 @@ const MyAppointments = () => {
         {isError ? (
           <ErrorComponent
             title={`Unable to load appointments: ${
-              errorSpecs?.response?.data?.errors[0]?.code || errorSpecs.message
+              error?.response?.data?.errors[0]?.code || error.message
             }`}
+            retry={refetch}
           />
         ) : isLoading ? (
           Array(3)
             .fill(0)
-            .map((_, i) => (
+            .map(_ => (
               <div>
                 <div className="flex gap-4 w-full">
                   <div className="w-52 h-52 flex items-end">
