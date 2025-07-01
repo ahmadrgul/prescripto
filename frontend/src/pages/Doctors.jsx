@@ -7,6 +7,7 @@ import DoctorCard from "../components/DoctorCard";
 import DoctorCardSkeleton from "../skeletons/DoctorCardSkeleton";
 import SpecializationSkeleton from "../skeletons/SpecializationSkeleton";
 import ErrorComponent from "../components/ErrorComponent";
+import { motion } from "framer-motion";
 
 const Doctors = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -96,13 +97,21 @@ const Doctors = () => {
               .map((_, i) => <DoctorCardSkeleton key={i} />)
           ) : (
             doctors.results.map((doctor) => (
-              <DoctorCard
+              <motion.div 
                 key={doctor.id}
-                id={doctor.id}
-                img={doctor.image}
-                name={"Dr. " + doctor.first_name + " " + doctor.last_name}
-                speciality={doctor.speciality}
-              />
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <DoctorCard
+                  key={doctor.id}
+                  id={doctor.id}
+                  img={doctor.image}
+                  name={"Dr. " + doctor.first_name + " " + doctor.last_name}
+                  speciality={doctor.speciality}
+                />
+              </motion.div>
             ))
           )}
         </div>

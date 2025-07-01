@@ -1,11 +1,11 @@
 import AppointmentCard from "../components/AppointmentCard";
-import { doctors } from "../assets/assets_frontend/assets";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { cancelAppointment, getAppointments } from "../api/appointments";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../components/ErrorComponent";
+import { motion } from "framer-motion";
 
 const MyAppointments = () => {
   const queryClient = useQueryClient();
@@ -87,7 +87,13 @@ const MyAppointments = () => {
             ))
         ) : (
           data.results.map((appt) => (
-            <div key={appt.id}>
+            <motion.div 
+              key={appt.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
               <AppointmentCard
                 docId={appt.doctor.id}
                 docImg={appt.doctor.image}
@@ -103,7 +109,7 @@ const MyAppointments = () => {
                 isCancelling={mutation.isPending}
               />
               <hr className="text-gray-300 mt-6 mb-4" />
-            </div>
+            </motion.div>
           ))
         )}
       </div>
