@@ -27,6 +27,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "appointment_date",
             "appointment_time",
             "state",
+            "paid",
         ]
 
     def validate(self, data):

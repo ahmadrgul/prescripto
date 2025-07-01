@@ -17,6 +17,7 @@ class Appointment(models.Model):
         ],
         default="scheduled",
     )
+    paid = models.BooleanField(default=False)
 
     class Meta:
         constraints = [
