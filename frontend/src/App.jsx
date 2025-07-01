@@ -21,6 +21,7 @@ import PageTransitionWrapper from "./components/PageTransitionWrapper";
 import { ToastContainer } from "react-toastify";
 import "react-loading-skeleton/dist/skeleton.css";
 import MyAppointments from "./pages/MyAppointments";
+import Profile from "./pages/Profile";
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -93,6 +94,14 @@ const App = () => {
             element={
               <PageTransitionWrapper>
                 <Contact />
+              </PageTransitionWrapper>
+            }
+          />
+          <Route
+            path="/me"
+            element={
+              <PageTransitionWrapper>
+                <Profile />
               </PageTransitionWrapper>
             }
           />

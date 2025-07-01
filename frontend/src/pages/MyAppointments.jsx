@@ -7,7 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../components/ErrorComponent";
 import { motion } from "framer-motion";
 import { handleAPIError } from "../utils/handleAPIError";
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router";
 
 const MyAppointments = () => {
@@ -49,10 +49,15 @@ const MyAppointments = () => {
       </div>
       <hr className="text-gray-300 mt-6 mb-4" />
       <div>
-        { !isAuthenticated ?
-          <div className="text-center text-xl">Please <Link to="/login" className="text-blue-500">Login</Link> to see your Appointments.</div>
-        :
-        isError ? (
+        {!isAuthenticated ? (
+          <div className="text-center text-xl">
+            Please{" "}
+            <Link to="/login" className="text-blue-500">
+              Login
+            </Link>{" "}
+            to see your Appointments.
+          </div>
+        ) : isError ? (
           <ErrorComponent
             title={`Unable to load appointments: ${
               error?.response?.data?.errors[0]?.code || error.message
@@ -62,7 +67,7 @@ const MyAppointments = () => {
         ) : isLoading ? (
           Array(3)
             .fill(0)
-            .map(_ => (
+            .map((_) => (
               <div>
                 <div className="flex gap-4 w-full">
                   <div className="w-52 h-52 flex items-end">
@@ -93,10 +98,9 @@ const MyAppointments = () => {
                 <hr className="text-gray-300 mt-6 mb-4" />
               </div>
             ))
-        ) : (
-          data.count !== 0 ?
+        ) : data.count !== 0 ? (
           data.results.map((appt) => (
-            <motion.div 
+            <motion.div
               key={appt.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -119,7 +123,8 @@ const MyAppointments = () => {
               />
               <hr className="text-gray-300 mt-6 mb-4" />
             </motion.div>
-          )) :
+          ))
+        ) : (
           <h1>No appointments found</h1>
         )}
       </div>

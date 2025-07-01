@@ -26,7 +26,26 @@ export const createPatient = async ({ firstname, email, password }) => {
     formData.append("password", password);
 
     const { data } = await axios.post("/patients/", formData);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
 
+export const patchPatient = async ({ id, fields }) => {
+  const formData = new FormData();
+  for (const [key, value] of Object.entries(fields)) {
+    if (value) {
+      formData.append(key, value);
+    }
+  }
+
+  for (const [key, value] of formData.entries()) {
+    console.log(key, value);
+  }
+
+  try {
+    const { data } = await axios.patch(`/patients/${id}/`, formData);
     return data;
   } catch (error) {
     throw error;

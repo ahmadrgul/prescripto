@@ -97,7 +97,7 @@ const Doctors = () => {
               .map((_, i) => <DoctorCardSkeleton key={i} />)
           ) : (
             doctors.results.map((doctor) => (
-              <motion.div 
+              <motion.div
                 key={doctor.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}

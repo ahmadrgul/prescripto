@@ -110,7 +110,6 @@ const AddDoctor = () => {
       }));
     formData.append("availability", JSON.stringify(clean_schedule));
     mutation.mutate(formData);
-    console.log(formData.get("availability"));
   };
 
   return (
