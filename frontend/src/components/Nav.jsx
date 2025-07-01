@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const Nav = () => {
   const { isAuthenticated, logout } = useAuth();
-  const [ showDropDown, setShowDropDown ] = useState(false);
+  const [showDropDown, setShowDropDown] = useState(false);
   const navigate = useNavigate();
 
   const tabs = [
@@ -57,32 +57,23 @@ const Nav = () => {
         <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
           <Button text="Create Account" bgColor="primary" textColor="white" />
         </Link>
-        <button 
+        <button
           className={`${!isAuthenticated && "hidden"} flex gap-3 items-center cursor-pointer`}
           onClick={() => setShowDropDown(!showDropDown)}
         >
-          <img 
-            src={assets.profile_pic}
-            className="rounded-full size-12"
-          />
-          <img 
-            src={assets.dropdown_icon}
-          />
+          <img src={assets.profile_pic} className="rounded-full size-12" />
+          <img src={assets.dropdown_icon} />
         </button>
-        <div className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}>
-          <Link 
-            to="/me"
-            className="cursor-pointer"
-          >
-              My Profile
+        <div
+          className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
+        >
+          <Link to="/me" className="cursor-pointer">
+            My Profile
           </Link>
-          <Link 
-            to="/appointments"
-            className="cursor-pointer w-full"
-          >
+          <Link to="/appointments" className="cursor-pointer w-full">
             My Appointments
           </Link>
-          <button 
+          <button
             onClick={() => {
               logout();
               toast.success("You've been logged out successfully");
@@ -90,7 +81,7 @@ const Nav = () => {
             }}
             className="text-start cursor-pointer"
           >
-              Logout
+            Logout
           </button>
         </div>
       </div>

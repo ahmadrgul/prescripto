@@ -191,37 +191,35 @@ export const Doctor = () => {
                 )}
               </div>
               <div className="flex gap-5 my-5 flex-wrap relative">
-                {isLoadingSchedule ? (
-                  Array(20)
-                  .fill(0)
-                  .map((_, i) => <Skeleton width={70} height={40} circle />)
-                ) : (
-                  selectedSchedule.slots.map((time) => (
-                    <motion.div
-                      key={time}
-                      layout
-                      transition={{
-                        layout: {
-                          duration: 0.3,
-                          type: "spring",
-                          stiffness: 300,
-                          damping: 25,
-                        },
-                      }}
-                    >
-                      <button
-                        className={`hover:bg-primary transition-all border cursor-pointer ${
-                          time === selectedTime
-                            ? "bg-primary border-transparent text-gray-100 drop-shadow-md drop-shadow-primary"
-                            : "border-gray-300 text-[#4B5563]"
-                        } hover:border-transparent text-center hover:text-gray-100 font-medium font-outfit py-2 hover:drop-shadow-md hover:drop-shadow-primary px-6 rounded-full`}
-                        onClick={() => setSelectedTime(time)}
+                {isLoadingSchedule
+                  ? Array(20)
+                      .fill(0)
+                      .map((_, i) => <Skeleton width={70} height={40} circle />)
+                  : selectedSchedule.slots.map((time) => (
+                      <motion.div
+                        key={time}
+                        layout
+                        transition={{
+                          layout: {
+                            duration: 0.3,
+                            type: "spring",
+                            stiffness: 300,
+                            damping: 25,
+                          },
+                        }}
                       >
-                        {format(parse(time, "HH:mm", new Date()), "hh:mm a")}
-                      </button>
-                    </motion.div>
-                  ))
-                )}
+                        <button
+                          className={`hover:bg-primary transition-all border cursor-pointer ${
+                            time === selectedTime
+                              ? "bg-primary border-transparent text-gray-100 drop-shadow-md drop-shadow-primary"
+                              : "border-gray-300 text-[#4B5563]"
+                          } hover:border-transparent text-center hover:text-gray-100 font-medium font-outfit py-2 hover:drop-shadow-md hover:drop-shadow-primary px-6 rounded-full`}
+                          onClick={() => setSelectedTime(time)}
+                        >
+                          {format(parse(time, "HH:mm", new Date()), "hh:mm a")}
+                        </button>
+                      </motion.div>
+                    ))}
               </div>
               <button
                 disabled={!selectedTime}
