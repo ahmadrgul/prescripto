@@ -99,15 +99,16 @@ class PatientProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(source="user.first_name")
     last_name = serializers.CharField(source="user.last_name", required=False)
     email = serializers.EmailField(source="user.email")
-    password = serializers.CharField(source="user.password", write_only=True)
+    password = serializers.CharField(source="user.password", write_only=True, required=False)
 
-    address = serializers.CharField(required=False, allow_blank=True)
+    address_line1 = serializers.CharField(required=False, allow_blank=True)
+    address_line2 = serializers.CharField(required=False, allow_blank=True)
     phone = serializers.CharField(required=False, allow_blank=True)
     birthday = serializers.DateField(required=False, allow_null=True)
     gender = serializers.ChoiceField(
-        choices=[("M", "Male"), ("F", "Female"), ("N", "Non-B")], required=False
+        choices=[("Male", "Male"), ("Female", "Female"), ("Other", "Non-B")], required=False
     )
-    image = serializers.ImageField(required=False, allow_null=True)
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = PatientProfile
@@ -117,11 +118,12 @@ class PatientProfileSerializer(serializers.ModelSerializer):
             "last_name",
             "email",
             "password",
-            "address",
             "phone",
             "birthday",
             "gender",
             "image",
+            "address_line1",
+            "address_line2",
         ]
 
     def create(self, validated_data):
@@ -133,6 +135,20 @@ class PatientProfileSerializer(serializers.ModelSerializer):
 
         patient_profile = PatientProfile.objects.create(user=user, **validated_data)
         return patient_profile
+    
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user", {})
+        user = instance.user
+
+        for attr, value in user_data.items():
+            setattr(user, attr, value)
+        user.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        return instance
 
 
 class SpecializationSerializer(serializers.Serializer):

@@ -46,13 +46,14 @@ class DoctorProfile(models.Model):
     fee = models.DecimalField(max_digits=5, decimal_places=2)
     address_line1 = models.TextField()
     address_line2 = models.TextField()
-    image = models.ImageField(upload_to="doctor_images", null=True)
+    image = models.ImageField(upload_to="doctor_images", default="defaults/upload_area.png")
 
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone = models.CharField(null=True, max_length=20)
-    address = models.TextField(null=True)
+    address_line1 = models.TextField(null=True)
+    address_line2 = models.TextField(null=True)
     birthday = models.DateField(null=True)
     GENDER_CHOICES = (
         ("M", "male"),
