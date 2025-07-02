@@ -113,9 +113,13 @@ const Patients = () => {
             Array(6)
               .fill(0)
               .map((_, i) => (
-                <tr>
-                  {columns.map(() => (
-                    <td className="px-4 py-4">
+                <tr 
+                  key={i}
+                >
+                  {columns.map((_, i) => (
+                    <td 
+                      key={i}
+                      className="px-4 py-4">
                       <Skeleton height={12} width={80} />
                     </td>
                   ))}

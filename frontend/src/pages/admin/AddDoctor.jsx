@@ -321,7 +321,9 @@ const AddDoctor = () => {
               </thead>
               <tbody>
                 {schedule.map((el, index) => (
-                  <tr>
+                  <tr
+                    key={index}
+                  >
                     <td>
                       <input
                         type="checkbox"

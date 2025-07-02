@@ -131,7 +131,10 @@ const Dashboard = () => {
               Array(6)
                 .fill(0)
                 .map((_, i) => (
-                  <div className="flex gap-4">
+                  <div 
+                    className="flex gap-4"
+                    key={i}  
+                  >
                     <Skeleton circle width={50} height={50} />
                     <div>
                       <Skeleton height={12} width={150} />

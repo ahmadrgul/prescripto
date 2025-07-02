@@ -67,8 +67,10 @@ const MyAppointments = () => {
         ) : isLoading ? (
           Array(3)
             .fill(0)
-            .map((_) => (
-              <div>
+            .map((_, i) => (
+              <div
+                key={i}
+              >
                 <div className="flex gap-4 w-full">
                   <div className="w-52 h-52 flex items-end">
                     <Skeleton width={208} height={208} />
