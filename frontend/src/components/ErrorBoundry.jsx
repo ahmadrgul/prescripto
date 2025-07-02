@@ -18,12 +18,15 @@ class ErrorBoundry extends React.Component {
     render() {
         if (this.state.hasError) {
             return (
-                <main className="flex gap-6 items-center justify-center h-screen font-outfit">
-                    <img 
-                        src={assets.info_icon}
-                        className="w-16"
-                    />
-                    <h3 className="text-5xl text-gray-600 font-medium text-center">Oops! Something went wrong. Try refreshing.</h3>
+                <main className="flex flex-col gap-6 items-center justify-center h-screen font-outfit">
+                    <div className="flex gap-6 items-center">
+                        <img 
+                            src={assets.info_icon}
+                            className="w-16"
+                        />
+                        <h3 className="text-5xl text-gray-600 font-medium text-center">Oops! Something went wrong. Try refreshing.</h3>
+                    </div>
+                    <p className="text-gray-600 text-center text-xl">If this persists, please consider reporting us at <a href="mailto:ahmadrgull786@gmail.com" className="text-blue-500">ahmadrgull786@gmail.com</a>. Thank you for your cooperation.</p>
                 </main>
             );
         }
