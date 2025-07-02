@@ -134,13 +134,14 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ))
-            ) : recentApps.count > 0 ? (
+            ) : recentApps.length > 0 ? (
               recentApps.map((app) => (
                 <RecentAppointment
                   key={app.id}
+                  id={app.id}
                   firstName={app.doctor.first_name}
                   lastName={app.doctor.last_name}
-                  img={fassets.profile_pic}
+                  img={app.doctor.image}
                   date={formatCustomDate(app.appointment_date)}
                 />
               ))
