@@ -5,11 +5,23 @@ import { Link, NavLink, useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query"
+import { getPatients } from "../api/patients";
+import Skeleton from "react-loading-skeleton";
 
 const Nav = () => {
   const { isAuthenticated, logout } = useAuth();
   const [showDropDown, setShowDropDown] = useState(false);
   const navigate = useNavigate();
+  const {
+    data,
+    isLoading,
+    isError,
+    isSuccess,
+  } = useQuery({
+    queryKey: ["user-data"],
+    queryFn: getPatients,
+  })
 
   const tabs = [
     {
@@ -53,38 +65,42 @@ const Nav = () => {
           ))}
         </ul>
       </div>
-      <div className="hidden md:block relative">
-        <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
-          <Button text="Create Account" bgColor="primary" textColor="white" />
-        </Link>
-        <button
-          className={`${!isAuthenticated && "hidden"} flex gap-3 items-center cursor-pointer`}
-          onClick={() => setShowDropDown(!showDropDown)}
-        >
-          <img src={assets.profile_pic} className="rounded-full size-12" />
-          <img src={assets.dropdown_icon} />
-        </button>
-        <div
-          className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
-        >
-          <Link to="/me" className="cursor-pointer">
-            My Profile
-          </Link>
-          <Link to="/appointments" className="cursor-pointer w-full">
-            My Appointments
+      {
+        isLoading ?
+        <Skeleton width={20} height={20} /> :
+        <div className="hidden md:block relative">
+          <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
+            <Button text="Create Account" bgColor="primary" textColor="white" />
           </Link>
           <button
-            onClick={() => {
-              logout();
-              toast.success("You've been logged out successfully");
-              navigate("/");
-            }}
-            className="text-start cursor-pointer"
+            className={`${!isAuthenticated && "hidden"} flex gap-3 items-center cursor-pointer`}
+            onClick={() => setShowDropDown(!showDropDown)}
           >
-            Logout
+            <img src={`${data.results[0].image}`} className="rounded-full size-12" />
+            <img src={assets.dropdown_icon} />
           </button>
+          <div
+            className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
+          >
+            <Link to="/me" className="cursor-pointer">
+              My Profile
+            </Link>
+            <Link to="/appointments" className="cursor-pointer w-full">
+              My Appointments
+            </Link>
+            <button
+              onClick={() => {
+                logout();
+                toast.success("You've been logged out successfully");
+                navigate("/");
+              }}
+              className="text-start cursor-pointer"
+            >
+              Logout
+            </button>
+          </div>
         </div>
-      </div>
+      }
       <div className="md:hidden">
         <button className="text-2xl text-[#1F2937]">
           <img src={assets.burger_menu} className="size-8" />
