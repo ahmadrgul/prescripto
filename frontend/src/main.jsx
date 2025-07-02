@@ -6,19 +6,22 @@ import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 import App from "./App.jsx";
 import { AnimatePresence } from "framer-motion";
+import ErrorBoundry from "./components/ErrorBoundry.jsx";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AuthProvider>
-          <AnimatePresence mode="wait">
-            <App />
-          </AnimatePresence>
-        </AuthProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ErrorBoundry>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <AnimatePresence mode="wait">
+              <App />
+            </AnimatePresence>
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ErrorBoundry>
   </StrictMode>,
 );
