@@ -5,6 +5,7 @@ export const getAppointments = async ({ status }) => {
     const { data } = await axios.get("/appointments", {
       params: {
         state: status,
+        ordering: `-state`,
       },
     });
     return data;
