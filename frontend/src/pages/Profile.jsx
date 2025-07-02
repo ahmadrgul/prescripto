@@ -64,7 +64,7 @@ const Profile = () => {
   };
 
   return (
-    <main className="font-outfit w-lg">
+    <main className="font-outfit w-fit">
       <div>
         <img
           src={fields.image}
@@ -114,57 +114,70 @@ const Profile = () => {
               <label htmlFor="email" className="text-[#4B5563]">
                 Email id:
               </label>
-              <input
-                id="email"
-                type="email"
-                value={fields.email}
-                disabled={!isEditing}
-                className={`outline-none ${isEditing ? "text-[#6B7280]" : "text-blue-400"} `}
-                onChange={(e) =>
-                  setFields({ ...fields, email: e.target.value })
-                }
-              />
+              {
+                isEditing ?
+                  <input
+                    id="email"
+                    type="email"
+                    value={fields.email}
+                    className="outline-none text-[#6B7280]"
+                    onChange={(e) =>
+                      setFields({ ...fields, email: e.target.value })
+                    }
+                  /> :
+                  <p className="text-blue-400">{fields.email}</p>
+              }
             </div>
             <div className="grid grid-cols-2">
               <label htmlFor="phone" className="text-[#4B5563]">
                 Phone:
               </label>
-              <input
-                id="phone"
-                type="tel"
-                value={fields.phone}
-                disabled={!isEditing}
-                className={`outline-none ${isEditing ? "text-[#6B7280]" : "text-blue-400"} `}
-                onChange={(e) =>
-                  setFields({ ...fields, phone: e.target.value })
-                }
-              />
+              {
+                isEditing ?
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={fields.phone}
+                    className="outline-none text-blue-400"
+                    onChange={(e) =>
+                      setFields({ ...fields, phone: e.target.value })
+                    }
+                  />
+                :
+                <p className="text-blue-400">{fields.phone}</p>
+              }
             </div>
             <div className="grid grid-cols-2">
               <label htmlFor="address_line1" className="text-[#4B5563]">
                 Address:
               </label>
-              <div>
-                <input
-                  id="address_line1"
-                  type="text"
-                  value={fields.address_line1}
-                  disabled={!isEditing}
-                  className={`outline-none text-[#6B7280]`}
-                  onChange={(e) =>
-                    setFields({ ...fields, address_line1: e.target.value })
-                  }
-                />
-                <input
-                  id="address_line2"
-                  type="text"
-                  value={fields.address_line2}
-                  disabled={!isEditing}
-                  className={`outline-none text-[#6B7280]`}
-                  onChange={(e) =>
-                    setFields({ ...fields, address_line2: e.target.value })
-                  }
-                />
+              <div className="flex flex-col text-[#6B7280]">
+                {
+                  isEditing ? <>
+                    <input
+                      id="address_line1"
+                      type="text"
+                      value={fields.address_line1}
+                      className={`outline-none`}
+                      onChange={(e) =>
+                        setFields({ ...fields, address_line1: e.target.value })
+                      }
+                    />
+                    <input
+                      id="address_line2"
+                      type="text"
+                      value={fields.address_line2}
+                      className={`outline-none`}
+                      onChange={(e) =>
+                        setFields({ ...fields, address_line2: e.target.value })
+                      }
+                    />
+                  </> :
+                  <>
+                    <p>{fields.address_line1}</p>
+                    <p>{fields.address_line2}</p>
+                  </>
+                }
               </div>
             </div>
           </div>
@@ -176,31 +189,37 @@ const Profile = () => {
               <label htmlFor="gender" className="text-[#4B5563]">
                 Gender:
               </label>
-              <input
-                id="gender"
-                type="text"
-                value={fields.gender}
-                disabled={!isEditing}
-                className="outline-none text-[#6B7280]"
-                onChange={(e) =>
-                  setFields({ ...fields, gender: e.target.value })
-                }
-              />
+              {
+                isEditing ?
+                <input
+                  id="gender"
+                  type="text"
+                  value={fields.gender}
+                  className="outline-none text-[#6B7280]"
+                  onChange={(e) =>
+                    setFields({ ...fields, gender: e.target.value })
+                  }
+                /> :
+                <p className="text-[#6B7280]">{fields.gender}</p>
+              }
             </div>
             <div className="grid grid-cols-2">
               <label htmlFor="birthday" className="text-[#4B5563]">
                 Birthday:
               </label>
-              <input
-                id="birthday"
-                type="date"
-                value={fields.birthday}
-                disabled={!isEditing}
-                className="outline-none text-[#6B7280]"
-                onChange={(e) =>
-                  setFields({ ...fields, birthday: e.target.value })
-                }
-              />
+              {
+                isEditing ?
+                <input
+                  id="birthday"
+                  type="date"
+                  value={fields.birthday}
+                  className="outline-none text-[#6B7280]"
+                  onChange={(e) =>
+                    setFields({ ...fields, birthday: e.target.value })
+                  }
+                /> :
+                <p className="text-[#6B7280]">{fields.birthday}</p>
+              }
             </div>
           </div>
         </div>
