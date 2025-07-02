@@ -10,7 +10,7 @@ import { getPatients } from "../api/patients";
 import Skeleton from "react-loading-skeleton";
 
 const Nav = () => {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const [showDropDown, setShowDropDown] = useState(false);
   const navigate = useNavigate();
   const {
@@ -84,12 +84,18 @@ const Nav = () => {
               <div
                 className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
               >
-                <Link to="/me" className="cursor-pointer">
-                  My Profile
-                </Link>
-                <Link to="/appointments" className="cursor-pointer w-full">
-                  My Appointments
-                </Link>
+                {
+                  user.role !== "admin" && (
+                    <>
+                      <Link to="/me" className="cursor-pointer">
+                        My Profile
+                      </Link>
+                      <Link to="/appointments" className="cursor-pointer w-full">
+                        My Appointments
+                      </Link>
+                    </>
+                  )
+                }
                 <button
                   onClick={() => {
                     logout();
