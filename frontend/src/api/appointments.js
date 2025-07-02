@@ -32,3 +32,14 @@ export const cancelAppointment = async (id) => {
     throw error;
   }
 };
+
+export const completeAppointment = async (id) => {
+  try {
+    const { data } = await axios.patch(`/appointments/${id}/`, {
+      state: "completed",
+    });
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -1,18 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import { assets as fassets } from "../../assets/assets_frontend/assets";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   useReactTable,
   getCoreRowModel,
   flexRender,
 } from "@tanstack/react-table";
-import { getAppointments } from "../../api/appointments";
-import { differenceInYears, format, parseISO } from "date-fns";
+import { completeAppointment, getAppointments } from "../../api/appointments";
+import { differenceInYears, format, parseISO, parse } from "date-fns";
 import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../../components/ErrorComponent";
+import { Link } from "react-router";
+import { capitalCaseOneWord } from "../../utils/text";
+import { toast } from "react-toastify";
+import { handleAPIError } from "../../utils/handleAPIError"
 
-const formatCustomDate = (isoData) => {
-  const data = parseISO(isoData);
-  return format(data, "do MMMM, yyyy. h:mm a");
+const formatCustomDate = (date) => {
+  date = parse(date, "yyyy-MM-dd HH:mm:ss", new Date())
+  return format(date, "do MMMM, yyyy | h:mm a");
 };
 
 const getAge = (isoDB) => {
@@ -25,6 +28,17 @@ const Appointments = () => {
     queryKey: ["appointments"],
     queryFn: getAppointments,
   });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: completeAppointment,
+    onSuccess: (data) => {
+      toast.success("Appointment has been marked completed");
+      queryClient.invalidateQueries({ queryKey: ["appointments"] })
+    },
+    onError: handleAPIError,
+  })
 
   const columns = [
     {
@@ -39,16 +53,12 @@ const Appointments = () => {
         return (
           <div className="flex gap-2 items-center">
             <img
-              src={fassets.profile_pic}
+              src={`http://localhost:8000/${patient.image}`}
               alt={patient.first_name}
               className="rounded-full size-8"
             />
             <span>
-              {patient.first_name.charAt(0).toUpperCase() +
-                patient.first_name.slice(1).toLowerCase() +
-                " " +
-                patient.last_name.charAt(0).toUpperCase() +
-                patient.last_name.slice(1).toLowerCase()}
+              {capitalCaseOneWord(patient.first_name) + " " + capitalCaseOneWord(patient.last_name)}
             </span>
           </div>
         );
@@ -64,27 +74,23 @@ const Appointments = () => {
     },
     {
       header: "Date & Time",
-      cell: ({ row }) => formatCustomDate(row.original.appointment_date),
+      cell: ({ row }) => formatCustomDate(`${row.original.appointment_date} ${row.original.appointment_time}`),
     },
     {
       header: "Doctor",
       cell: ({ row }) => {
         const doctor = row.original.doctor;
         return (
-          <div className="flex gap-2 items-center">
+          <Link to={`/admin/doctors/${doctor.id}`} className="flex gap-2 items-center">
             <img
-              src={fassets.profile_pic}
+              src={`http://localhost:8000/${doctor.image}`}
               alt={doctor.first_name_name}
               className="rounded-full size-8"
             />
             <span>
-              {doctor.first_name.charAt(0).toUpperCase() +
-                doctor.first_name.slice(1).toLowerCase() +
-                " " +
-                doctor.last_name.charAt(0).toUpperCase() +
-                doctor.last_name.slice(1).toLowerCase()}
+              {"Dr. " + capitalCaseOneWord(doctor.first_name) + " " + capitalCaseOneWord(doctor.last_name)}
             </span>
-          </div>
+          </Link>
         );
       },
     },
@@ -94,9 +100,17 @@ const Appointments = () => {
     },
     {
       header: "Status",
-      cell: ({ row }) =>
-        row.original.state.charAt(0).toUpperCase() +
-        row.original.state.slice(1).toLowerCase(),
+      cell: ({ row }) => (
+      <button 
+        className={`cursor-pointer ${statusColorMap[row.original.state]}`}
+        onClick={() => mutation.mutate(row.original.id)}
+        disabled={row.original.state==="completed"}
+      >
+          {
+            row.original.state.charAt(0).toUpperCase() +
+            row.original.state.slice(1).toLowerCase()
+          }
+      </button>)
     },
   ];
 
@@ -105,6 +119,12 @@ const Appointments = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const statusColorMap = {
+    cancelled: "text-red-500",
+    scheduled: "text-blue-500",
+    completed: "text-green-500",
+  };
 
   return (
     <main className="p-10 w-full">
