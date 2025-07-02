@@ -1,13 +1,15 @@
 import { useEffect, useState, useRef } from "react";
-import { assets } from "../assets/assets_frontend/assets";
+import { useAuth } from "../context/AuthContext"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getPatients, patchPatient } from "../api/patients";
 import { toast } from "react-toastify";
 import { handleAPIError } from "../utils/handleAPIError";
+import { Link } from "react-router";
 
 const Profile = () => {
   const [isEditing, setEditing] = useState(false);
   const [id, setId] = useState(null);
+  const { user } = useAuth();
   const [fields, setFields] = useState({
     image: null,
     first_name: null,
@@ -62,6 +64,8 @@ const Profile = () => {
       setFields({ ...fields, image: imgUrl });
     }
   };
+
+  if (user.role === "admin") return <p className="w-full flex items-center justify-center text-2xl text-gray-700">Sorry. This page is not intended for admin users.<Link to="/admin" className="text-blue-500">&nbsp;Navigate&nbsp;</Link>to Admin Panel</p>
 
   return (
     <main className="font-outfit w-fit">

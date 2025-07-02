@@ -7,6 +7,7 @@ import RecentAppointment from "../../components/admin/RecentAppointment";
 import { format, parseISO } from "date-fns";
 import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../../components/ErrorComponent";
+import { Link } from "react-router";
 
 const formatCustomDate = (isoData) => {
   const data = parseISO(isoData);
@@ -46,16 +47,19 @@ const Dashboard = () => {
           number: fetchedStats.doctors,
           label: "Doctors",
           icon: assets.doctor_icon,
+          path: "/admin/doctors",
         },
         {
           number: fetchedStats.appointments,
           label: "Appointments",
           icon: assets.appointments_icon,
+          path: "/admin/appointments",
         },
         {
           number: fetchedStats.patients,
           label: "Patients",
           icon: assets.patients_icon,
+          path: "/admin/patients",
         },
       ]);
   }, [isSuccessStats]);
@@ -90,20 +94,21 @@ const Dashboard = () => {
               ))
           ) : (
             stats.map((stat, index) => (
-              <div
-                className="flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
+              <Link
                 key={index}
+                to={stat.path}
+                className="group flex w-fit pl-2 pr-12 py-3.5 gap-4 rounded-lg border-gray-200 border"
               >
                 <img src={stat.icon} className="rounded-full" />
                 <div className="flex flex-col justify-center">
-                  <span className="text-[#515151] font-medium font-outfit text-xl">
+                  <span className="text-[#515151] transition-all group-hover:text-primary font-medium font-outfit text-xl">
                     {stat.number}
                   </span>
                   <span className="font-outfit text-[#8893B0]">
                     {stat.label}
                   </span>
                 </div>
-              </div>
+              </Link>
             ))
           )}
         </div>
