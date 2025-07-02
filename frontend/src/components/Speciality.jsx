@@ -18,6 +18,7 @@ const Speciality = () => {
           <Link
             to={`/doctors?speciality=${speciality.speciality}`}
             className="cursor-pointer"
+            key={index}
           >
             <div
               key={index}

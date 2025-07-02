@@ -53,8 +53,8 @@ const Nav = () => {
       </div>
       <div className="hidden md:block">
         <ul className="flex gap-6 text-[16px] text-[#1F2937] font-medium font-poppins">
-          {tabs.map((tab) => (
-            <li>
+          {tabs.map((tab, index) => (
+            <li key={index}>
               <NavLink
                 to={tab.path}
                 className={({ isActive }) =>

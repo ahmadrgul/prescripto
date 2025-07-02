@@ -194,7 +194,7 @@ export const Doctor = () => {
                 {isLoadingSchedule
                   ? Array(20)
                       .fill(0)
-                      .map((_, i) => <Skeleton width={70} height={40} circle />)
+                      .map((_, i) => <Skeleton width={70} height={40} circle key={i}/>)
                   : selectedSchedule.slots.map((time) => (
                       <motion.div
                         key={time}
@@ -254,8 +254,9 @@ export const Doctor = () => {
               .fill(0)
               .map((_, i) => <DoctorCardSkeleton key={i} />)
           ) : (
-            relatedDocs.results.map((doctor, index) => (
+            relatedDocs.results.map(doctor => (
               <DoctorCard
+                key={doctor.id}
                 id={doctor.id}
                 img={doctor.image}
                 name={"Dr. " + doctor.first_name + " " + doctor.last_name}
