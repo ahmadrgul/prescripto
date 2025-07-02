@@ -22,7 +22,7 @@ class Appointment(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["appointment_date", "appointment_time"], name="unique_date_time"
+                fields=["appointment_date", "appointment_time"], name="unique_date_time", condition=~models.Q(state="cancelled")
             ),
         ]
 

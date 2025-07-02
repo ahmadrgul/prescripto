@@ -22,7 +22,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         IsParticipantOrAdmin,
         AllowAdminPatientOnPost,
     ]
-    ordering_fields = ["appointment_date"]
+    ordering_fields = ["appointment_date", "state"]
     search_fields = [
         "patient__user__firstname",
         "patient__user__lastname",
@@ -62,7 +62,7 @@ class DoctorScheduleByDoctorView(APIView):
         next_week = today + timedelta(days=7)
 
         appointments = Appointment.objects.filter(
-            doctor_id=doctor_id, appointment_date__range=[today, next_week]
+            doctor_id=doctor_id, appointment_date__range=[today, next_week], state="scheduled"
         )
 
         appointments_by_date = defaultdict(set)
@@ -114,6 +114,6 @@ def dashboard_stats(request):
 
 @api_view(["GET"])
 def recent_appointments(request):
-    appointments = Appointment.objects.order_by("-appointment_date")[:10]
+    appointments = Appointment.objects.exclude(state="cancelled").order_by("appointment_date")[:10]
     serializer = AppointmentSerializer(appointments, many=True)
     return Response(serializer.data)
