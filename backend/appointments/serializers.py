@@ -31,12 +31,14 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
 
     def validate(self, data):
-        user = self.context["request"].user
+        request = self.context["request"]
+        user = request.user
 
-        if user.role == "admin" and "patient" not in data:
-            raise serializers.ValidationError(
-                "Patient must be specified for admin-created appointments."
-            )
+        if request.method == "POST":
+            if user.role == "admin" and "patient" not in data:
+                raise serializers.ValidationError(
+                    "Patient must be specified for admin-created appointments."
+                )
 
         date = data.get("appointment_date")
         if date is not None:
