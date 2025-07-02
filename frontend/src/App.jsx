@@ -22,6 +22,7 @@ import { ToastContainer } from "react-toastify";
 import "react-loading-skeleton/dist/skeleton.css";
 import MyAppointments from "./pages/MyAppointments";
 import Profile from "./pages/Profile";
+import PageNotFound from "./pages/PageNotFound";
 
 const ScrollToTop = () => {
   const location = useLocation();
@@ -40,6 +41,14 @@ const App = () => {
     <>
       <ScrollToTop />
       <Routes location={location} key={location.pathname}>
+        <Route
+            path="*"
+            element={
+              <PageTransitionWrapper>
+                <PageNotFound />
+              </PageTransitionWrapper>
+            }
+        />
         <Route element={<UserLayout />}>
           <Route
             path="/"
