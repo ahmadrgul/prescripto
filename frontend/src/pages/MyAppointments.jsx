@@ -13,7 +13,7 @@ import { Link } from "react-router";
 const MyAppointments = () => {
   const queryClient = useQueryClient();
   const [selectedStatus, setSelectedStatus] = useState("scheduled");
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const { data, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["appointments", selectedStatus],
@@ -30,6 +30,8 @@ const MyAppointments = () => {
     onError: handleAPIError,
   });
 
+  if (user.role === "admin") return <p className="w-full flex items-center justify-center text-2xl text-gray-700">Sorry. This page is not intended for admin users.<Link to="/admin" className="text-blue-500">&nbsp;Navigate&nbsp;</Link>to Admin Panel</p>
+  
   return (
     <main className="font-outfit">
       <div className="flex justify-between">

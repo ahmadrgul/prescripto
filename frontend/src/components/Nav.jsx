@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query"
 import { getPatients } from "../api/patients";
 import Skeleton from "react-loading-skeleton";
+import { getUserData } from "../api/auth";
 
 const Nav = () => {
   const { isAuthenticated, logout, user } = useAuth();
@@ -18,11 +19,10 @@ const Nav = () => {
     isLoading,
     isError,
     isSuccess,
-    
   } = useQuery({
     queryKey: ["user-data"],
     queryFn: getPatients,
-    enabled: !!isAuthenticated,
+    enabled: !!isAuthenticated && !!user && (user.role !== "admin"),
   })
 
   const tabs = [
@@ -67,51 +67,65 @@ const Nav = () => {
           ))}
         </ul>
       </div>
-      {
+      { 
         isLoading ?
         <Skeleton width={50} height={50} circle /> :
+        isAuthenticated && user.role === "admin" ? (
+          <div>
+            <Button
+              text="Logout"
+              bgColor="primary"
+              textColor="white"
+              onClick={() => {
+                  logout();
+                  toast.success("You've been logged out successfully");
+                  navigate("/");
+              }}
+            />
+          </div>
+        ) :
         <div className="hidden md:block relative">
-          {
-            isAuthenticated ? (
-            <>
+        {
+          isAuthenticated ? (
+          <>
+            <button
+              className={`${!isAuthenticated && "hidden"} flex gap-3 items-center cursor-pointer`}
+              onClick={() => setShowDropDown(!showDropDown)}
+            >
+              <img src={`${data.results[0].image}`} className="rounded-full size-12" />
+              <img src={assets.dropdown_icon} />
+            </button>
+            <div
+              className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
+            >
+              {
+                user.role !== "admin" && (
+                  <>
+                    <Link to="/me" className="cursor-pointer">
+                      My Profile
+                    </Link>
+                    <Link to="/appointments" className="cursor-pointer w-full">
+                      My Appointments
+                    </Link>
+                  </>
+                )
+              }
               <button
-                className={`${!isAuthenticated && "hidden"} flex gap-3 items-center cursor-pointer`}
-                onClick={() => setShowDropDown(!showDropDown)}
+                onClick={() => {
+                  logout();
+                  toast.success("You've been logged out successfully");
+                  navigate("/");
+                }}
+                className="text-start cursor-pointer"
               >
-                <img src={`${data.results[0].image}`} className="rounded-full size-12" />
-                <img src={assets.dropdown_icon} />
+                Logout
               </button>
-              <div
-                className={`${!(showDropDown && isAuthenticated) && "hidden"} flex flex-col shadow-xl py-6 gap-3 w-52 px-4 justify-start bg-[#F8F8F8] text-[#4B5563] font-outfit text-lg absolute top-17 right-0`}
-              >
-                {
-                  user.role !== "admin" && (
-                    <>
-                      <Link to="/me" className="cursor-pointer">
-                        My Profile
-                      </Link>
-                      <Link to="/appointments" className="cursor-pointer w-full">
-                        My Appointments
-                      </Link>
-                    </>
-                  )
-                }
-                <button
-                  onClick={() => {
-                    logout();
-                    toast.success("You've been logged out successfully");
-                    navigate("/");
-                  }}
-                  className="text-start cursor-pointer"
-                >
-                  Logout
-                </button>
-              </div>
-            </> ) :
-            <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
-              <Button text="Create Account" bgColor="primary" textColor="white" />
-            </Link>
-          }
+            </div>
+          </> ) :
+          <Link to="/register" className={`${isAuthenticated && "hidden"}`}>
+            <Button text="Create Account" bgColor="primary" textColor="white" />
+          </Link>
+        }
         </div>
       }
       <div className="md:hidden">
