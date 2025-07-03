@@ -12,4 +12,34 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+axiosInstance.interceptors.response.use(
+  response => response,
+  async (error) => {
+   const originalRequest = error.config;
+   if (
+    error.response?.status === 401 &&
+    error.response.data.errors.some(error => error.code === "token_not_valid")
+   ) {
+    try {
+      const res = await axios.post(`http://localhost:8000/api/auth/jwt/refresh`, {
+        refresh: localStorage.getItem("refresh")
+      })
+      localStorage.setItem("access", res.data.access);
+      axiosInstance.defaults.headers['Authorization'] = `Bearer ${res.data.access}`;
+      originalRequest.headers['Authorization'] = `Bearer ${res.data.access}`;
+
+      return axiosInstance(originalRequest);
+    } catch (refreshError) {
+      localStorage.removeItem("access");
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("user");
+      window.location.href = "/login";
+      return Promise.reject(refreshError);
+    }
+   }
+
+   return Promise.reject(error);
+  }
+)
+
 export default axiosInstance;
