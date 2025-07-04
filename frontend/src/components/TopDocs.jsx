@@ -35,7 +35,7 @@ const TopDocs = () => {
             <ErrorComponent
               title={
                 "Unable to load doctors data: " +
-                  error?.response?.data?.errors[0]?.code || error.message
+                  (error?.response?.data?.errors[0]?.code || error.message)
               }
               retry={refetch}
             />
@@ -45,6 +45,10 @@ const TopDocs = () => {
             .fill(0)
             .map((_, i) => <DoctorCardSkeleton key={i} />)
         ) : (
+          topDocs.count === 0 ?
+          <h1 className="text-center font-outfit text-gray-500 text-2xl">
+                No Doctors found.
+          </h1> :
           topDocs.results.map((doctor, index) => (
             <DoctorCard
               key={doctor.id}

@@ -103,7 +103,7 @@ const Patients = () => {
                 <ErrorComponent
                   title={
                     "Unable to load patients data: " +
-                      error?.response?.data?.errors[0]?.code || error.message
+                      (error?.response?.data?.errors[0]?.code || error.message)
                   }
                   retry={refetch}
                 />

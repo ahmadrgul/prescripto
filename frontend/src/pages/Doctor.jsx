@@ -95,7 +95,7 @@ export const Doctor = () => {
     <main>
       {isError || isErrorSchedule ? (
         <ErrorComponent
-          title={`Unable to load doctor data: ${error?.response?.data?.errors[0]?.code || error?.message || errorSchedule?.response?.data?.errors[0]?.code || errorSchedule?.message}`}
+          title={`Unable to load doctor data: ${(error?.response?.data?.errors[0]?.code || error?.message || errorSchedule?.response?.data?.errors[0]?.code || errorSchedule?.message)}`}
           retry={() => {
             refetch();
             refetchSchedule();

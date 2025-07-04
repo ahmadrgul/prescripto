@@ -53,8 +53,8 @@ const Doctors = () => {
               <ErrorComponent
                 title={
                   "Unable to load specializations: " +
-                    errorSpecs?.response?.data?.errors[0]?.code ||
-                  errorSpecs.message
+                    (errorSpecs?.response?.data?.errors[0]?.code ||
+                  errorSpecs.message)
                 }
                 retry={refetchSpecs}
               />
@@ -85,8 +85,8 @@ const Doctors = () => {
               <ErrorComponent
                 title={
                   "Unable to load doctors data: " +
-                    errorDoctors?.response?.data?.errors[0]?.code ||
-                  errorDoctors.message
+                    (errorDoctors?.response?.data?.errors[0]?.code ||
+                  errorDoctors.message)
                 }
                 retry={refetchDoctors}
               />
@@ -96,6 +96,10 @@ const Doctors = () => {
               .fill(0)
               .map((_, i) => <DoctorCardSkeleton key={i} />)
           ) : (
+            doctors.count === 0 ?
+            <h1 className="text-center font-outfit text-gray-500 text-2xl">
+                No Doctors found.
+            </h1> :
             doctors.results.map((doctor) => (
               <motion.div
                 key={doctor.id}

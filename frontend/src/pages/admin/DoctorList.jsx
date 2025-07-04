@@ -26,7 +26,7 @@ const DoctorList = () => {
           <ErrorComponent
             title={
               "Unable to load doctors data: " +
-                error?.response?.data?.errors[0]?.code || error.message
+               ( error?.response?.data?.errors[0]?.code || error.message)
             }
             retry={refetch}
           />

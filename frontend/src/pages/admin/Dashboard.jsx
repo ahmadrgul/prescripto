@@ -72,8 +72,8 @@ const Dashboard = () => {
             <ErrorComponent
               title={
                 "Unable to load stats: " +
-                  errorStats?.response?.data?.errors[0]?.code ||
-                errorStats.message
+                  (errorStats?.response?.data?.errors[0]?.code ||
+                errorStats.message)
               }
               retry={refetchStats}
             />
@@ -122,8 +122,8 @@ const Dashboard = () => {
               <ErrorComponent
                 title={
                   "Unable to load recent appointments: " +
-                    errorApps?.response?.data?.errors[0]?.code !=
-                    undefined || errorApps.message
+                    (errorApps?.response?.data?.errors[0]?.code !=
+                    undefined || errorApps.message)
                 }
                 retry={refetchApps}
               />

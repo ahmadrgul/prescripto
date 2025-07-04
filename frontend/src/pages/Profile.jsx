@@ -79,8 +79,8 @@ const Profile = () => {
           <ErrorComponent
             title={
               "Unable to load user data: " +
-                error?.response?.data?.errors[0]?.code ||
-              error.message
+                (error?.response?.data?.errors[0]?.code ||
+              error.message)
             }
             retry={refetch}
           />

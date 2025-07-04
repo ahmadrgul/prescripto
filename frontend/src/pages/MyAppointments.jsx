@@ -62,8 +62,8 @@ const MyAppointments = () => {
         ) : isError ? (
           <ErrorComponent
             title={`Unable to load appointments: ${
-              error?.response?.data?.errors[0]?.code || error.message
-            }`}
+              (error?.response?.data?.errors[0]?.code || error.message
+            )}`}
             retry={refetch}
           />
         ) : isLoading ? (
