@@ -2,7 +2,6 @@ import { Link } from "react-router";
 import { converToVerboseDate, time24ToTime12 } from "../utils/dates";
 import { capitalCaseOneWord } from "../utils/text";
 import { ClipLoader } from "react-spinners";
-import { media } from "../utils/endpoints"
 
 const AppointmentCard = ({
   docId,
@@ -28,7 +27,7 @@ const AppointmentCard = ({
     <div className="flex gap-4 font-outfit">
       <Link to={`/doctors/${docId}`}>
         <div className="w-52 h-52 flex items-end bg-[#EAEFFF]">
-          <img src={`${media(docImg)}`} />
+          <img src={docImg} />
         </div>
       </Link>
       <div className="flex flex-col justify-between w-2/3">

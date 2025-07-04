@@ -12,7 +12,6 @@ import { Link } from "react-router";
 import { capitalCaseOneWord } from "../../utils/text";
 import { toast } from "react-toastify";
 import { handleAPIError } from "../../utils/handleAPIError"
-import { media } from "../../utils/endpoints"
 
 const formatCustomDate = (date) => {
   date = parse(date, "yyyy-MM-dd HH:mm:ss", new Date())
@@ -54,7 +53,7 @@ const Appointments = () => {
         return (
           <div className="flex gap-2 items-center">
             <img
-              src={media(patient.image)}
+              src={patient.image}
               alt={patient.first_name}
               className="rounded-full size-8"
             />
@@ -84,7 +83,7 @@ const Appointments = () => {
         return (
           <Link to={`/admin/doctors/${doctor.id}`} className="flex gap-2 items-center">
             <img
-              src={media(doctor.image)}
+              src={doctor.image}
               alt={doctor.first_name_name}
               className="rounded-full size-8"
             />

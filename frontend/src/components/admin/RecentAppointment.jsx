@@ -3,7 +3,6 @@ import { assets } from "../../assets/assets_admin/assets";
 import { cancelAppointment } from "../../api/appointments"
 import { toast } from "react-toastify";
 import { handleAPIError } from "../../utils/handleAPIError"
-import { media } from "../../utils/endpoints"
 
 const RecentAppointment = ({ id, firstName, lastName, img, date }) => {
 
@@ -18,7 +17,7 @@ const RecentAppointment = ({ id, firstName, lastName, img, date }) => {
   return (
     <div className="flex justify-between">
       <div className="flex gap-4">
-        <img src={media(img)} className="rounded-full size-12" />
+        <img src={img} className="rounded-full size-12" />
         <div>
           <h2 className="text-[#262626] text-lg font-medium font-outfit">{`Dr. ${firstName} ${lastName}`}</h2>
           <span className="text-[#696B80] font-outfit">Booking on {date}</span>
