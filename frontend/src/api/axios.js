@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_BASE_URL
+
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api",
+  baseURL: baseURL,
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -21,7 +23,7 @@ axiosInstance.interceptors.response.use(
     error.response.data.errors.some(error => error.code === "token_not_valid")
    ) {
     try {
-      const res = await axios.post(`http://localhost:8000/api/auth/jwt/refresh`, {
+      const res = await axios.post(`${baseURL}/auth/jwt/refresh`, {
         refresh: localStorage.getItem("refresh")
       })
       localStorage.setItem("access", res.data.access);
