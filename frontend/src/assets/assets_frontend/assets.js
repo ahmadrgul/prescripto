@@ -37,6 +37,7 @@ import Gynecologist from "./Gynecologist.svg";
 import Neurologist from "./Neurologist.svg";
 import Pediatricians from "./Pediatricians.svg";
 import burger_menu from "./burger_menu.svg";
+import retry_icon from "./retry_icon.png";
 
 export const assets = {
   appointment_img,
@@ -57,6 +58,7 @@ export const assets = {
   stripe_logo,
   razorpay_logo,
   burger_menu,
+  retry_icon
 };
 
 export const specialityData = [
