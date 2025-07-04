@@ -63,7 +63,7 @@ class PatientProfile(models.Model):
         ("O", "other"),
     )
     gender = models.CharField(max_length=5, null=True)
-    image = models.ImageField(upload_to="pateint_images", 
+    image = models.ImageField(upload_to="patient_images", 
                               default="https://res.cloudinary.com/dsccsqdk2/image/upload/v1751626552/profile_icon_dggge8.png", 
                               null=True, 
                               max_length=500)

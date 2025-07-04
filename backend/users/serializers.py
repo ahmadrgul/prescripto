@@ -55,6 +55,7 @@ class DoctorProfileSerializer(serializers.ModelSerializer):
     password = serializers.CharField(source="user.password", write_only=True)
 
     availability = AvailabilityField(child=serializers.DictField(), write_only=True)
+    image = serializers.ImageField(required=False, use_url=False)
 
     class Meta:
         model = DoctorProfile
@@ -108,8 +109,8 @@ class PatientProfileSerializer(serializers.ModelSerializer):
     gender = serializers.ChoiceField(
         choices=[("Male", "Male"), ("Female", "Female"), ("Other", "Non-B")], required=False
     )
-    image = serializers.ImageField(required=False)
-
+    image = serializers.ImageField(required=False, use_url=False)
+    
     class Meta:
         model = PatientProfile
         fields = [
