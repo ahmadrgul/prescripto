@@ -2,7 +2,7 @@ import axios from "./axios";
 
 export const getAppointments = async ({ status }) => {
   try {
-    const { data } = await axios.get("/appointments", {
+    const { data } = await axios.get("/appointments/", {
       params: {
         state: status,
         ordering: `-state`,

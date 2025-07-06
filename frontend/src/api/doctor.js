@@ -47,8 +47,7 @@ export const deleteDoctor = async (id) => {
 export const getTopDoctors = async () => {
   try {
     const data = await axios.get("/top-docs");
-    console.log(data)
-    // return data;
+    return data;
   } catch (error) {
     throw error;
   }
