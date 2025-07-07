@@ -40,10 +40,6 @@ export const patchPatient = async ({ id, fields }) => {
     }
   }
 
-  for (const [key, value] of formData.entries()) {
-    console.log(key, value);
-  }
-
   try {
     const { data } = await axios.patch(`/patients/${id}/`, formData);
     return data;

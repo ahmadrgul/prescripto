@@ -24,9 +24,7 @@ const Profile = () => {
     birthday: null,
   });
 
-  const isLoading = true;
-
-  const { data, isError, error, isSuccess, refetch } = useQuery({
+  const { data, isError, error, isLoading, isSuccess, refetch } = useQuery({
     queryKey: ["user-data"],
     queryFn: getPatients,
   });
@@ -123,6 +121,7 @@ const Profile = () => {
                     type="text"
                     value={fields.first_name}
                     className="outline-none"
+                    placeholder="Firstname"
                     onChange={(e) =>
                       setFields({ ...fields, first_name: e.target.value })
                     }
@@ -132,6 +131,7 @@ const Profile = () => {
                     type="text"
                     value={fields.last_name}
                     className="outline-none"
+                    placeholder="Lastname"
                     onChange={(e) =>
                       setFields({ ...fields, last_name: e.target.value })
                     }
@@ -156,6 +156,7 @@ const Profile = () => {
                         type="email"
                         value={fields.email}
                         className="outline-none text-[#6B7280]"
+                        placeholder="Email"
                         onChange={(e) =>
                           setFields({ ...fields, email: e.target.value })
                         }
@@ -174,6 +175,7 @@ const Profile = () => {
                         type="tel"
                         value={fields.phone}
                         className="outline-none text-blue-400"
+                        placeholder="Phone"
                         onChange={(e) =>
                           setFields({ ...fields, phone: e.target.value })
                         }
@@ -194,6 +196,7 @@ const Profile = () => {
                           type="text"
                           value={fields.address_line1}
                           className={`outline-none`}
+                          placeholder="Address Line 1"
                           onChange={(e) =>
                             setFields({ ...fields, address_line1: e.target.value })
                           }
@@ -203,6 +206,7 @@ const Profile = () => {
                           type="text"
                           value={fields.address_line2}
                           className={`outline-none`}
+                          placeholder="Address Line 2"
                           onChange={(e) =>
                             setFields({ ...fields, address_line2: e.target.value })
                           }
@@ -231,6 +235,7 @@ const Profile = () => {
                       type="text"
                       value={fields.gender}
                       className="outline-none text-[#6B7280]"
+                      placeholder="Gender (Male, Female, Other)"
                       onChange={(e) =>
                         setFields({ ...fields, gender: e.target.value })
                       }
@@ -249,6 +254,7 @@ const Profile = () => {
                       type="date"
                       value={fields.birthday}
                       className="outline-none text-[#6B7280]"
+                      placeholder="Birthday"
                       onChange={(e) =>
                         setFields({ ...fields, birthday: e.target.value })
                       }

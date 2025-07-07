@@ -14,7 +14,7 @@ const TopDocs = () => {
     refetch,
   } = useQuery({
     queryKey: ["top_doctors"],
-    queryFn: () => getTopDoctors(),
+    queryFn: getTopDoctors,
   });
 
   return (

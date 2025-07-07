@@ -11,9 +11,21 @@ import Skeleton from "react-loading-skeleton";
 import ErrorComponent from "../../components/ErrorComponent";
 
 const getAge = (isoDB) => {
-  const dob = parseISO(isoDB);
-  return differenceInYears(new Date(), dob);
+  if (isoDB) {
+    const dob = parseISO(isoDB);
+    return differenceInYears(new Date(), dob);
+  }
+  else {
+    return "N/A";
+  }
 };
+
+const displayOrNA = (value) => {
+  if (value === null || value === undefined || value === "")
+    return "N/A"
+  else
+    return value;
+}
 
 const Patients = () => {
   const { data, isLoading, isError, error, refetch } = useQuery({
@@ -56,14 +68,17 @@ const Patients = () => {
     {
       header: "Gender",
       accessorKey: "gender",
+      cell: ({ getValue }) => displayOrNA(getValue()),
     },
     {
       header: "Email",
       accessorKey: "email",
+      cell: ({ getValue }) => displayOrNA(getValue()),
     },
     {
       header: "Phone",
       accessorKey: "phone",
+      cell: ({ getValue }) => displayOrNA(getValue()),
     },
   ];
 
