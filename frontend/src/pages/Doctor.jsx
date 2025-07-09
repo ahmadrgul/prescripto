@@ -1,5 +1,4 @@
-import generateSlots from "../utils/generateSlots";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getDoctorById, getScheduleById, getTopDoctors } from "../api/doctor";
 import ErrorComponent from "../components/ErrorComponent";
@@ -16,6 +15,7 @@ import DoctorCardSkeleton from "../skeletons/DoctorCardSkeleton";
 
 export const Doctor = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const [selectedSchedule, setSelectedSchedule] = useState({
     weekday: 0,
@@ -55,7 +55,8 @@ export const Doctor = () => {
     mutationFn: createAppointment,
     onError: handleAPIError,
     onSuccess: (data) => {
-      toast.success(`The appointment has been booked successfully.`);
+      toast.success(`Appointment has been reserved. Please pay doctor fee within next 30 minutes to confirm booking.`);
+      navigate("/appointments");
     },
   });
 

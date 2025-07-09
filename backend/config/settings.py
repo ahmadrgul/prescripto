@@ -1,16 +1,16 @@
 import os
 import dj_database_url
 from pathlib import Path
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY", "change-this-in-production")
 DEBUG = os.getenv("DEBUG", "False") == "True"
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLIC_KEY = os.getenv("STRIPE_PUBLIC_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "drf_standardized_errors",
     "cloudinary_storage",
     "cloudinary",
+    "payments",
 ]
 
 MIDDLEWARE = [

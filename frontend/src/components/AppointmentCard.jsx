@@ -2,14 +2,22 @@ import { Link } from "react-router";
 import { converToVerboseDate, time24ToTime12 } from "../utils/dates";
 import { capitalCaseOneWord } from "../utils/text";
 import { ClipLoader } from "react-spinners";
+import { useMutation } from "@tanstack/react-query";
+import { checkout } from "../api/checkout"
+import { toast } from "react-toastify";
+import { loadStripe } from "@stripe/stripe-js";
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
 
 const AppointmentCard = ({
+  apptId,
   docId,
   docImg,
   docName,
   docSpeciality,
   docAddressLine1,
   docAddressLine2,
+  docFee,
   apptDate,
   apptTime,
   apptStatus,
@@ -18,11 +26,28 @@ const AppointmentCard = ({
   cancelFn,
 }) => {
   const statusColorMap = {
-    cancelled: "text-red-500",
+    pending: "text-red-500",
     scheduled: "text-blue-500",
     completed: "text-green-500",
+    cancelled: "text-gray-300",
   };
 
+  const mutation = useMutation({
+    mutationFn: checkout,
+    onSuccess: async (data) => {
+      const stripe = await stripePromise;
+      const result = await stripe.redirectToCheckout({
+        sessionId: data.id,
+      });
+      if (result.error) {
+        toast.error(result.error.message);
+      }
+    },
+    onError: (error) => {
+      console.error(error)
+    },
+  });
+                           
   return (
     <div className="flex gap-4 font-outfit">
       <Link to={`/doctors/${docId}`}>
@@ -66,12 +91,13 @@ const AppointmentCard = ({
         <div className="flex flex-col gap-2 justify-end">
           <button
             disabled={isPaid}
-            className={`${apptStatus === "cancelled" && "hidden"} bg-primary disabled:cursor-not-allowed w-72 h-12 rounded-sm text-white cursor-pointer`}
+            className={`${apptStatus === "cancelled" && "hidden"} bg-primary disabled:cursor-default w-72 h-12 rounded-sm text-white cursor-pointer`}
+            onClick={!isPaid ? () => mutation.mutate(apptId) : undefined}
           >
-            {isPaid ? "Paid" : "Pay here"}
+            {isPaid ? "Paid" : `Pay Fee — $${docFee}`}
           </button>
           <button
-            disabled={!(apptStatus === "scheduled" || isCancelling)}
+            disabled={!(apptStatus === "scheduled" || apptStatus === "pending" || isCancelling)}
             className="border border-[#BABABA] w-72 h-12 rounded-sm text-[#4B5563] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             onClick={cancelFn}
           >

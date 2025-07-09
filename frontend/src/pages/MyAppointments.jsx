@@ -112,12 +112,14 @@ const MyAppointments = () => {
               transition={{ duration: 0.3 }}
             >
               <AppointmentCard
+                apptId={appt.id}
                 docId={appt.doctor.id}
                 docImg={appt.doctor.image}
                 docName={`Dr. ${appt.doctor.first_name} ${appt.doctor.last_name}`}
                 docSpeciality={appt.doctor.speciality}
                 docAddressLine1={appt.doctor.address_line1}
                 docAddressLine2={appt.doctor.address_line2}
+                docFee={appt.doctor.fee}
                 apptDate={appt.appointment_date}
                 apptTime={appt.appointment_time}
                 apptStatus={appt.state}
