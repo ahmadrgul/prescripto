@@ -1,5 +1,0 @@
-[[services]]
-name = "cron-job"
-source = "."
-cron = "* * * * *"
-startCommand = "python manage.py handle_expired_appointments"

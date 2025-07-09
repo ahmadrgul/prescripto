@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (AppointmentViewSet, DoctorScheduleByDoctorView,
                     DoctorScheduleViewSet, dashboard_stats,
-                    recent_appointments)
+                    recent_appointments, handle_expired_appointments)
 
 router = DefaultRouter()
 router.register(r"appointments", AppointmentViewSet, basename="appointment")
@@ -18,4 +18,5 @@ urlpatterns = [
         name="recent-appointments",
     ),
     path("doctors/<int:doctor_id>/schedule", DoctorScheduleByDoctorView.as_view()),
+    path("cron/run/handle-expired-appointments", handle_expired_appointments)
 ]

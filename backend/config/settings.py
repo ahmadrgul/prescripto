@@ -14,6 +14,8 @@ STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
 
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
+CRON_SECRET = os.getenv("CRON_SECRET")
+
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",

@@ -13,6 +13,11 @@ from .models import Appointment, DoctorSchedule, TimeOff
 from .permissions import AllowAdminPatientOnPost, IsParticipantOrAdmin
 from .serializers import AppointmentSerializer, DoctorScheduleSerializer
 
+from django.conf import settings
+from django.core.management import call_command
+from django.views.decorators.csrf import csrf_exempt
+
+
 
 class AppointmentViewSet(viewsets.ModelViewSet):
     queryset = Appointment.objects.all()
@@ -117,3 +122,15 @@ def recent_appointments(request):
     appointments = Appointment.objects.exclude(state="cancelled").order_by("appointment_date")[:10]
     serializer = AppointmentSerializer(appointments, many=True)
     return Response(serializer.data)
+
+CRON_SECRET = settings.CRON_SECRET
+
+@csrf_exempt
+@api_view(["POST"])
+def handle_expired_appointments(request):
+    token = request.headers.get("X-CRON-TOKEN")
+    if token != CRON_SECRET:
+        return Response({"error": "Invalid Token"}, status=400)
+    
+    call_command("handle_expired_appointments")
+    return Response({"status": "Job excecuted"})
