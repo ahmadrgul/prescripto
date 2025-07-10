@@ -48,8 +48,8 @@ const Register = () => {
   };
 
   return (
-    <main className="flex items-center justify-center font-outfit h-screen">
-      <div className="w-[570px] border border-[#D4D4D4] py-14 px-12 rounded-2xl">
+   <main className="flex sm:items-center mt-10 justify-center font-outfit sm:h-screen">
+      <div className="w-full max-w-xl sm:border border-[#D4D4D4] sm:py-14 sm:px-12 rounded-2xl">
         <h1 className="text-3xl text-[#4B5563] font-medium mb-2">
           Create Account
         </h1>

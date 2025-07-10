@@ -38,7 +38,7 @@ const AdminSidebar = () => {
             <NavLink
               to={`admin/${tab.path}`}
               className={({ isActive }) =>
-                `flex cursor-pointer gap-3 items-end ${isActive ? "bg-[#F2F3FF] border-r-primary font-medium" : "border-r-transparent"} border-r-6  py-5 pl-6 pr-36`
+                `flex cursor-pointer gap-3 items-end ${isActive ? "bg-[#F2F3FF] border-r-primary font-medium" : "border-r-transparent"} border-r-6  py-5 pl-6 lg:pr-8 xl:pr-36`
               }
             >
               <img src={tab.icon} className="size-4" />

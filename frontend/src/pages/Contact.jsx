@@ -10,7 +10,7 @@ const Contact = () => {
         <div>
           <img src={assets.contact_image} className="w-[550px]" />
         </div>
-        <div className="font-outfit w-1/2 text-[#4B5563] flex flex-col justify-center">
+        <div className="font-outfit md:w-1/2 text-[#4B5563] flex flex-col justify-center">
           <h3 className="text-xl font-semibold mb-8">OUR OFFICE</h3>
           <p className="mb-0.5">54709 Willms Station</p>
           <p className="mb-10">Suite 350, Washington, USA</p>

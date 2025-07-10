@@ -8,10 +8,12 @@ const UserLayout = () => {
   const showFooter = location.pathname !== "/login" && location.pathname !== "/doctors" && location.pathname !== "/register" && location.pathname !== "/me" && location.pathname !== "/appointments";
 
   return (
-    <div className="mx-auto px-4 sm:px-8 md:px-20 lg:px-32 xl:px-60">
-      {showNav && <Nav />}
-      <Outlet />
-      {showFooter && <Footer />}
+    <div className="flex justify-center">
+      <div className="w-full max-w-[96rem] mx-1 sm:mx-4 md:mx-8">
+        {showNav && <Nav />}
+        <Outlet />
+        {showFooter && <Footer />}
+      </div>
     </div>
   );
 };

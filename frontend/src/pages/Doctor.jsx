@@ -109,7 +109,7 @@ export const Doctor = () => {
               <Skeleton className="h-72" width="100%" />
             ) : (
               !isError && (
-                <div className="w-full md:w-72 h-72 overflow-visible flex items-end bg-primary rounded-lg ">
+                <div className="w-full md:w-72 md:h-72 overflow-visible flex items-end bg-primary rounded-lg ">
                   <img src={doctor.image} alt={doctor.name} />
                 </div>
               )

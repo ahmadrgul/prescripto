@@ -46,7 +46,7 @@ const Doctors = () => {
       <h3 className="mt-10 mb-6 text-xl text-[#4B5563] font-medium">
         Browse through the doctors specialization
       </h3>
-      <div className="flex gap-10 mb-20">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start gap-10 mb-20">
         <aside className="flex flex-col gap-2">
           {isErrorSpecs ? (
             <div className="flex items-center justify-center">
@@ -79,7 +79,7 @@ const Doctors = () => {
             ))
           )}
         </aside>
-        <div className="grid w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
+        <div className="grid place-items-center-safe w-full grid-cols-[repeat(auto-fit,minmax(16rem,1fr))] gap-10">
           {isErrorDoctors ? (
             <div className="flex items-center justify-center">
               <ErrorComponent

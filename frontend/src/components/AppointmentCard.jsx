@@ -50,8 +50,8 @@ const AppointmentCard = ({
                            
   return (
     <div className="flex gap-4 font-outfit">
-      <Link to={`/doctors/${docId}`}>
-        <div className="w-52 h-52 flex items-end bg-[#EAEFFF]">
+      <Link to={`/doctors/${docId} `}>
+        <div className="w-52 h-52 min-[500px]:flex hidden items-end bg-[#EAEFFF]">
           <img src={docImg} />
         </div>
       </Link>
@@ -73,7 +73,7 @@ const AppointmentCard = ({
           <p className="text-lg">{docAddressLine1}</p>
           <p className="text-lg">{docAddressLine2}</p>
         </div>
-        <div className="flex gap-2 text-lg">
+        <div className="flex flex-col gap-2 text-lg">
           <h5 className="font-medium text-[#4B5563]">Date & Time:</h5>
           <span className="text-[#989898] flex gap-1">
             <p>{converToVerboseDate(apptDate)}</p>
@@ -91,14 +91,34 @@ const AppointmentCard = ({
         <div className="flex flex-col gap-2 justify-end">
           <button
             disabled={isPaid}
-            className={`${apptStatus === "cancelled" && "hidden"} bg-primary disabled:cursor-default w-72 h-12 rounded-sm text-white cursor-pointer`}
+            className={`${apptStatus === "cancelled" && "hidden"} bg-primary disabled:cursor-default max-[950px]:block hidden h-12 rounded-sm text-white cursor-pointer`}
             onClick={!isPaid ? () => mutation.mutate(apptId) : undefined}
           >
             {isPaid ? "Paid" : `Pay Fee — $${docFee}`}
           </button>
           <button
             disabled={!(apptStatus === "scheduled" || apptStatus === "pending" || isCancelling)}
-            className="border border-[#BABABA] w-72 h-12 rounded-sm text-[#4B5563] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            className="border border-[#BABABA] max-[950px]:block hidden h-12 rounded-sm text-[#4B5563] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+            onClick={cancelFn}
+          >
+            {isCancelling ? (
+              <div>
+                <ClipLoader size={20} color="#fff" />
+              </div>
+            ) : (
+              "X"
+            )}
+          </button>
+          <button
+            disabled={isPaid}
+            className={`${apptStatus !== "cancelled" && "min-[950px]:block"} bg-primary disabled:cursor-default hidden w-72 h-12 rounded-sm text-white cursor-pointer`}
+            onClick={!isPaid ? () => mutation.mutate(apptId) : undefined}
+          >
+            {isPaid ? "Paid" : `Pay Fee — $${docFee}`}
+          </button>
+          <button
+            disabled={!(apptStatus === "scheduled" || apptStatus === "pending" || isCancelling)}
+            className="border border-[#BABABA] hidden min-[950px]:block w-72 h-12 rounded-sm text-[#4B5563] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             onClick={cancelFn}
           >
             {isCancelling ? (
